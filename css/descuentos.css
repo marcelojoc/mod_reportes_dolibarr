@@ -1,0 +1,20 @@
+.prueba{
+  
+  color:bisque;
+  font-size: 3em;
+background-color: green;
+
+};
+
+.row{
+    margin-top:30px;
+    
+}
+.clickable{
+    cursor: pointer;   
+}
+
+.panel-heading span {
+	margin-top: -20px;
+	font-size: 15px;
+}
