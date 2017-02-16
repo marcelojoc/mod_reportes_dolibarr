@@ -197,7 +197,7 @@ class modReportes extends DolibarrModules
 									'titre'=>'reportes',
 									'mainmenu'=>'reportes',
 									'leftmenu'=>'reportes',
-									'url'=>'/reportes/reportes.php',
+									'url'=>'/reportes/index.php',
 									'langs'=>'mylangfile@reportes',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 									'position'=>100,
 									'enabled'=>'$conf->reportes->enabled',	// Define condition to show or hide menu entry. Use '$conf->reportes->enabled' if entry must be visible if module is enabled.
@@ -212,7 +212,7 @@ class modReportes extends DolibarrModules
 								'titre'=>'reportes left menu1',
 								'mainmenu'=>'xxx',
 								'leftmenu'=>'reportes',
-								'url'=>'/reportes/prueba_list2.php',
+								'url'=>'/reportes/index.php',
 								'langs'=>'mylangfile@reportes',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 								'position'=>100,
 								'enabled'=>'$conf->reportes->enabled',  // Define condition to show or hide menu entry. Use '$conf->reportes->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
