@@ -18,6 +18,8 @@ Uso de tecnologias open source:
 ### Instalacion
 
   - El directorio debe copiarse en el raiz de modulos de Doibarr
+  - clonarlo bajo el nombre de reportes
+  - git clone https://github.com/marcelojoc/mod_reportes_dolibarr.git reportes
   - Desde el administrador de modulos debes activar el mismo
 
 
@@ -45,7 +47,7 @@ Terceros:
 | Ruta | ruta1 | Numérico | 2 | si |
 | Vendedor | vendedor | Numérico | 2 | si |
 
-
+- NOTA: ruta se refiere a los dias de la semana de 1 (lunes) a 6 (sabado)
 
 
 License

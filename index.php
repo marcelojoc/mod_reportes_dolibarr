@@ -7,23 +7,38 @@ if (! $res && file_exists("../../../dolibarr/htdocs/main.inc.php")) $res=@includ
 if (! $res && file_exists("../../../../dolibarr/htdocs/main.inc.php")) $res=@include '../../../../dolibarr/htdocs/main.inc.php';   // Used on dev env only
 if (! $res) die("Include of main fails");
 
+dol_include_once('/reportes/class/productos.class.php');
+dol_include_once('/reportes/class/tercero.class.php');
+// importaciones de el modulo
+
+
 
 
 
 $morejs=array("/reportes/js/datepicker/bootstrap-datepicker.min.js" );
 $morecss=array("/reportes/css/datepicker/bootstrap-datepicker.css" );
-
-
-
-
 llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
  //dol_fiche_head(); // encabezado de la ficha de dolibarr
  //var_dump($_SESSION);
 
- unset($_SESSION['dataPrint']);
- unset($_SESSION['vendorPrint']);
 
+
+
+
+    $user = new Tercero ($db); // verifico quen es el que esta ingresando al mcrypt_module_open
+
+
+    $dato_usuario= $user->getPermiso($_SESSION['dol_login']);
+
+    $_SESSION['codVendedor']= $dato_usuario->codVendedor;
+
+
+
+
+    $productos = new My_Productos($db);
+
+ 
 
 
 
@@ -45,7 +60,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
     <div class="row">
 
 
-        <div class="col-md-5">
+        <div class="col-md-6" id="sandbox-container">
 
             <div class="form-group">
             <label class="col-md-2 control-label" for="selectbasic">Fechas</label>
@@ -53,7 +68,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
                     <div class="input-daterange input-group" id="datepicker">
                         <input type="text" class="input-sm form-control" name="start" />
-                        <span class="input-group-addon">to</span>
+                        <span class="input-group-addon">hasta</span>
                         <input type="text" class="input-sm form-control" name="end" />
                     </div>
 
@@ -64,7 +79,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
 
-        <div class="col-md-5 col-md-offset-2">
+        <div class="col-md-4 col-md-offset-2">
             <!--<button type="button" class="btn btn-primary btn-block">Primary</button>-->
 
         </div>
@@ -88,8 +103,33 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
         <label class="col-md-2 control-label" for="selectbasic">Vendedor</label>
         <div class="col-md-10">
             <select id="selectbasic" name="selectbasic" class="form-control">
-            <option value="1">Option one</option>
-            <option value="2">Option two</option>
+
+        <?php
+                if($dato_usuario['codVendedor'] == -1 )
+                {   
+
+                        // el parametro -1 indica permiso para ver tdods los usuarios
+
+                        $vendedores= $user->getVendedores();
+
+                        foreach($vendedores as $vendedor)
+                        {
+
+                            print'<option value="'.$vendedor['rowid'].'">'.$vendedor ['nombre'] .' '. $vendedor ['apellido'] .'</option>';
+
+                        }
+
+                }
+                else
+                {
+
+                          print'<option value="'.$dato_usuario['rowid'].'">'.$dato_usuario ['nombre'] .' '. $dato_usuario ['apellido'] .'</option>';
+
+                }
+
+
+        ?>
+
             </select>
         </div>
         </div>
@@ -103,9 +143,24 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
         <label class="col-md-2 control-label" for="selectbasic">Producto</label>
         <div class="col-md-10">
             <select id="selectbasic" name="selectbasic" class="form-control">
-            <option value="1">Option one</option>
-            <option value="2">Option two</option>
+
+            <?php
+                    $prod = $productos->getProducts();
+
+                    if( $prod != -1) // si no tiene nada  no imprime
+                    {
+                            foreach ($prod as $producto)
+                            {
+
+                                print'<option value="'.$producto['id'].'">'.$producto ['producto'].'</option>';
+
+                            }
+
+                    }
+
+            ?>
             </select>
+
         </div>
         </div>
 
@@ -205,9 +260,12 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 <script>
 
     $('#sandbox-container .input-daterange').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: true,
     language: "es",
     daysOfWeekDisabled: "0",
-    daysOfWeekHighlighted: "6"
+    daysOfWeekHighlighted: "6",
+    autoclose: true
 });
 </script>
 
