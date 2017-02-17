@@ -59,7 +59,7 @@ public function getPermiso($login)  // devuelve los datos del usuatio que accede
 
 
 
-public function getVendedores()
+public function getVendedores()  // me trae todos los vendedores activos 
 {
 
 		$sql= "SELECT u.rowid, u.firstname, u.lastname, extra.codvendedor FROM 
@@ -98,7 +98,7 @@ public function getVendedores()
 
 
 
-public function getVendedor()
+public function getVendedor($id)
 {
 
          $sql= "SELECT lastname, `firstname` FROM 
@@ -137,7 +137,56 @@ public function getVendedor()
 
 
 
+public function getClienteAsociado($codVendedor)
+{
 
+		$sql= "SELECT 
+			soc.rowid,
+            soc.code_client, 
+            soc.nom, 
+            soc.address ,  
+            extra.ruta1
+            FROM 
+                llx_societe AS soc , 
+                llx_societe_extrafields AS extra 
+            WHERE  
+                soc.rowid = extra.fk_object   AND extra.vendedor='".$codVendedor."' 
+            ORDER BY soc.nom ASC";
+
+
+
+
+		$resql= $this->db->query($sql); // hago la consulta
+
+		$this->db->begin();
+			$resql= $this->db->query($sql); // hago la consulta
+
+			if ($resql) {     //  verifico que se hizo
+				$numrows = $this->db->num_rows($resql);
+
+				while ($obj = $this->db->fetch_object($resql)) {
+
+
+						$datos[]= array('rowid'=>$obj->rowid, 
+										'codigo'=>$obj->code_client, 
+										'nombre'=>$obj->nom, 
+										'direccion'=>$obj->address 
+						); 
+							
+				}
+
+				return $datos;
+
+				$this->db->free($resql);
+
+			} else {
+				$this->errors[] = 'Error ' . $this->db->lasterror();
+				dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
+
+				return -1;
+			}
+
+}
 
 
 

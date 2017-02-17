@@ -15,15 +15,19 @@ dol_include_once('/reportes/class/tercero.class.php');
 
 
 
-$morejs=array("/reportes/js/datepicker/bootstrap-datepicker.min.js" );
-$morecss=array("/reportes/css/datepicker/bootstrap-datepicker.css" );
+$morejs=array("/reportes/js/datepicker/bootstrap-datepicker.min.js" , 
+              "/reportes/js/spin/spin.min.js" );
+
+
+$morecss=array("/reportes/css/datepicker/bootstrap-datepicker.css" , 
+                "/reportes/css/style.reportes.css"
+                 );
+
+
 llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
  //dol_fiche_head(); // encabezado de la ficha de dolibarr
  //var_dump($_SESSION);
-
-
-
 
 
     $user = new Tercero ($db); // verifico quen es el que esta ingresando al mcrypt_module_open
@@ -48,7 +52,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
  <!-- Page Content -->
-    <div class="container-fluid">
+    <div class="container-fluid " id="foo">
 
 
 <div class="row">
@@ -67,9 +71,9 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
             <div class="col-md-10">
 
                     <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" class="input-sm form-control" name="start" />
-                        <span class="input-group-addon">hasta</span>
-                        <input type="text" class="input-sm form-control" name="end" />
+                        <input type="text" class="input-sm form-control" name="start" id="fecha_inicio" />
+                        <span class="input-group-addon">al</span>
+                        <input type="text" class="input-sm form-control" name="end" id="fecha_fin"/>
                     </div>
 
             </div>
@@ -100,9 +104,9 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
         <div class="form-group">
-        <label class="col-md-2 control-label" for="selectbasic">Vendedor</label>
+        <label class="col-md-2 control-label" for="selVendedor">Vendedor</label>
         <div class="col-md-10">
-            <select id="selectbasic" name="selectbasic" class="form-control">
+            <select id="selVendedor" name="selVendedor" class="form-control">
 
         <?php
                 if($dato_usuario['codVendedor'] == -1 )
@@ -140,9 +144,9 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
         
 
         <div class="form-group">
-        <label class="col-md-2 control-label" for="selectbasic">Producto</label>
+        <label class="col-md-2 control-label" for="selProducto">Producto</label>
         <div class="col-md-10">
-            <select id="selectbasic" name="selectbasic" class="form-control">
+            <select id="selProducto" name="selProducto" class="form-control">
 
             <?php
                     $prod = $productos->getProducts();
@@ -172,7 +176,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
         <div class="col-md-2">
 
-        <button type="button" class="btn btn-primary btn-block">Buscar</button>
+        <button type="button" class="btn btn-primary btn-block" id="search_btn">Buscar</button>
         </div>
 
 <br>
@@ -189,7 +193,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
 
-<div class="row">
+<div class="row segundo" >
 
                     <div class="panel panel-default">
                     <div class="panel-heading">Reporte Nombre vendedor</div>
@@ -203,27 +207,26 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                     <table class="table table-bordered table-responsive">
                         <thead>
                         <tr>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
-                            <th>Email</th>
+                            <th>Codigo</th>
+                            <th>Cliente</th>
+                            <th>Domicilio</th>
+                            <th>Importe</th>
+                            <th>Cantidad</th>
+                            <th>Ultima Compra</th>
+
+
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>John</td>
-                            <td>Doe</td>
-                            <td>john@example.com</td>
+                            <td>3343</td>
+                            <td>Carlos pepeeeeeeeeeeeee</td>
+                            <td>avenida </td>
+                            <td>12334 (16.3%)</td>
+                            <td>1324 (12.5%)</td>
+                            <td>21/01/2017</td>
                         </tr>
-                        <tr>
-                            <td>Mary</td>
-                            <td>Moe</td>
-                            <td>mary@example.com</td>
-                        </tr>
-                        <tr>
-                            <td>July</td>
-                            <td>Dooley</td>
-                            <td>july@example.com</td>
-                        </tr>
+
                         </tbody>
                     </table>
 
@@ -280,3 +283,5 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 $db->close();
 
 ?>
+
+<script src="js/app/mainReportes.js"></script>
