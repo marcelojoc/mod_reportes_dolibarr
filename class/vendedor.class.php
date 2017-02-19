@@ -15,6 +15,8 @@ class Vendedor
 	}
 
 
+//geter Setter
+
 	public function setIdVendedor( $idVendedor){
 
 		$this->idVendedor = $idVendedor;
@@ -28,6 +30,67 @@ class Vendedor
 	}
  
  
+
+
+//=======================================================================
+
+
+
+
+ 	public function getCodVendedor(){
+
+         $sql= "SELECT u.firstname, u.lastname, extra.codvendedor FROM 
+         llx_user_extrafields as extra, llx_user as u WHERE 
+         u.rowid= ". $this->idVendedor." AND  
+         extra.fk_object = u.rowid";
+
+            $this->db->begin();
+            $resql = $this->db->query($sql);
+        if ($resql)
+        {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
+            if ($num)
+            {
+
+                            $obj = $this->db->fetch_object($resql);
+                            if ($obj)
+                            {
+                                    // You can use here results
+                                    $respuesta = $obj->codvendedor ;
+                            }
+
+            }
+        }else{
+
+            $respuesta = 'Sin Vendedor Asignado';
+        }
+
+        $this->db->commit();
+
+
+        return  $respuesta;
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  	public function getVendedor($idVendedor){
 
