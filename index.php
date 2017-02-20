@@ -204,7 +204,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
                
                             
-                    <table class="table table-bordered table-responsive">
+                    <table class="table table-bordered table-responsive" id= "table_complete" >
                         <thead>
                         <tr>
                             <th>Codigo</th>
@@ -217,15 +217,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr>
-                            <td>3343</td>
-                            <td>Carlos pepeeeeeeeeeeeee</td>
-                            <td>avenida </td>
-                            <td>12334 (16.3%)</td>
-                            <td>1324 (12.5%)</td>
-                            <td>21/01/2017</td>
-                        </tr>
+                        <tbody id="table_body">
 
                         </tbody>
                     </table>

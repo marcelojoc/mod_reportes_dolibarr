@@ -28,7 +28,7 @@ $id_producto= $dato['producto'];
 // var_dump($datos);
 
 $reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_producto );
- //$reporte   = new Reportes ($db, 8, '02/11/2016', '20/02/2017' , 4 );
+//$reporte   = new Reportes ($db, 8, '02/11/2016', '20/02/2017' , 2 );
 
 
 $respuesta=null;
@@ -48,7 +48,7 @@ $respuesta=null;
 $respuesta= $reporte->getreporte();
 
        
-
+//var_dump($reporte);
 
 //  switch ($consulta)
 // {

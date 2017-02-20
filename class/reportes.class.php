@@ -47,8 +47,6 @@ class Reportes
 
 
 
-
-
 function getReporte()
 {
 
@@ -57,7 +55,8 @@ function getReporte()
 
         if($clientes != null)
         {
-
+            $total_prod=0;
+            $total_importe=0;
             foreach($clientes as $cliente)
             {
 
@@ -72,7 +71,15 @@ function getReporte()
 
                 );
 
+                $total_prod= $total_prod + $cantidades['cantidad'] ;
+                $total_importe= $total_importe + $cantidades['valor'] ;
+
             }
+
+                 $total[]= array( "total_prod" => $total_prod,
+                                  "total_importe" => $total_importe
+
+                );
 
 
         }
@@ -81,7 +88,19 @@ function getReporte()
             $dato= "No hay Clientes asignados";
         }
 
-        return $dato;
+
+
+
+        $datoSort= $this->orderMultiDimensionalArray($dato, 'cantidad', true);
+
+       return  array($datoSort, $total);
+
+
+
+
+
+
+        
 
 }
 
@@ -114,7 +133,7 @@ function getReporte()
             FROM    llx_societe, llx_societe_extrafields
             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
             AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-            ORDER BY code_client ASC";
+            ORDER BY code_client desc";
 
             $resql = $this->db->query($sql);
 
@@ -154,7 +173,7 @@ function getReporte()
     {
 
     $sql ="SELECT rowid, datef FROM llx_facture
-    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef ASC ";
+    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC ";
 
   
         $res = $this->db->query($sql);
@@ -244,6 +263,69 @@ private function change_fecha($fecha)
     return $fecha;
 
 }
+
+
+
+// function array_sort($array, $on, $order=SORT_ASC)
+// {
+//     $new_array = array();
+//     $sortable_array = array();
+
+//     if (count($array) > 0) {
+//         foreach ($array as $k => $v) {
+//             if (is_array($v)) {
+//                 foreach ($v as $k2 => $v2) {
+//                     if ($k2 == $on) {
+//                         $sortable_array[$k] = $v2;
+//                     }
+//                 }
+//             } else {
+//                 $sortable_array[$k] = $v;
+//             }
+//         }
+
+//         switch ($order) {
+//             case SORT_ASC:
+//                 asort($sortable_array);
+//             break;
+//             case SORT_DESC:
+//                 arsort($sortable_array);
+//             break;
+//         }
+
+//         foreach ($sortable_array as $k => $v) {
+//             $new_array[$k] = $array[$k];
+//         }
+//     }
+
+
+//     return $new_array;
+
+    
+// }
+
+
+function orderMultiDimensionalArray ($toOrderArray, $field, $inverse = false) {
+    $position = array();
+    $newRow = array();
+    foreach ($toOrderArray as $key => $row) {
+            $position[$key]  = $row[$field];
+            $newRow[$key] = $row;
+    }
+    if ($inverse) {
+        arsort($position);
+    }
+    else {
+        asort($position);
+    }
+    $returnArray = array();
+    foreach ($position as $key => $pos) {     
+        $returnArray[] = $newRow[$key];
+    }
+    return $returnArray;
+}
+
+
 
 
 

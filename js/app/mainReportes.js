@@ -70,10 +70,8 @@ var opts = {
 // funciones ajax
 
 
-    function get_reporte(parametro= null){
+function get_reporte(parametro= null){
 
-
-console.log(parametro);
 		
 		$.ajax(
 				{
@@ -87,8 +85,8 @@ console.log(parametro);
 
 				success : function(json) {
 
-						console.log(json);
-				//loadComponent(json);
+                        
+                        cargarTabla(json);
 				},
 
 				error : function(xhr, status) {
@@ -108,3 +106,32 @@ console.log(parametro);
 	}
 
 })();
+
+
+
+
+
+
+
+function cargarTabla(datos_json)
+{
+
+var datos= datos_json[0];
+var totales = datos_json[1];
+
+
+    $('#table_body tr').remove();
+        for (var i =0 ; i < datos.length; i++)
+        {
+            
+
+                $('#table_body').append(
+
+                " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" + datos[i]['direccion'] + "</td><td>" + datos[i]['importe'] + "</td><td>" + datos[i]['cantidad'] + "</td><td>21/01/2017</td></tr>"
+
+
+                );
+
+        }
+
+}
