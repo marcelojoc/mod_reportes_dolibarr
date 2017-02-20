@@ -5,26 +5,36 @@ require_once DOL_DOCUMENT_ROOT.'/reportes/class/tercero.class.php';
 // validar acceso
 
 
-$consulta = GETPOST("consulta", "alpha");
-$datos     = GETPOST("dato", "alpha");
-
+// $consulta = GETPOST("consulta", "alpha");
+// $datos     = GETPOST("dato", "alpha");
 
 
 //var_dump($datos);
 
-$consulta = $_GET["consulta"];
-$dato     =  $_GET["dato"];
+$consulta = $_POST["consulta"]; // recibir datos de metodo a ejecutar
+$dato     =  $_POST["dato"];	// recibo un arreglo con los datos del formulario
 
-//$clientes = new Tercero($db);
+// Separo cada dato enviado para instanciar el reporte
+$id_usuario= $dato['vendedor'];
+$fecha_ini= $dato['inicio'];
+$fecha_fin= $dato['fin'];
+$id_producto= $dato['producto'];
 
 
-// $reporte   = new Reportes ($db, 8, "fecha ini", "fecha fin", 2 );
+
+
+
+// var_dump($consulta);
+// var_dump($datos);
+
+$reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_producto );
+ //$reporte   = new Reportes ($db, 8, '02/11/2016', '20/02/2017' , 4 );
 
 
 $respuesta=null;
 
-		$vendedor = new Vendedor($db);
-		$respuesta = $vendedor->getCodVendedor(2);
+		
+		//$respuesta = $vendedor->getCodVendedor(8);
 
 //$prueba = $ruta->getRutas();
 
@@ -32,10 +42,10 @@ $respuesta=null;
 
 //var_dump($reporte);
 
-$respuesta = $reporte->getClientes();
+//$respuesta = $reporte->getFacturas(527);
 
 
-var_dump($respuesta);
+$respuesta= $reporte->getreporte();
 
        
 

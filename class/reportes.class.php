@@ -1,5 +1,5 @@
 <?php
-include_once DOL_DOCUMENT_ROOT .'vendedor.class.php';
+require_once ('tercero.class.php');
 /*
 
 En esta serie de lclases vamos a necesitar aproximadamente 3
@@ -31,11 +31,11 @@ class Reportes
 	{
 		$this->db = $db;
         $this->id_usuario = $id_usuario;
-        $this->fecha_ini= $fecha_ini;
-        $this->fecha_fin= $fecha_fin;		
+        $this->fecha_ini= $this->change_fecha($fecha_ini);
+        $this->fecha_fin= $this->change_fecha($fecha_fin);		
         $this->producto= $producto;
-		$vendedor = new Vendedor($this->db, $this->id_usuario);
-		$this->codVendedor = $vendedor->getCodVendedor($id_usuario);
+		$tercero = new Tercero($this->db, $this->id_usuario);
+		$this->codVendedor = $tercero->getCodVendedor($this->id_usuario);
 	}
 
 
@@ -46,57 +46,204 @@ class Reportes
 
 
 
-function getClientes()  //trae los clientes correspondientes al vendedor
+
+
+
+function getReporte()
 {
 
-$sql="	                SELECT  llx_societe.code_client, 
-                        llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address
+        $clientes = $this->getClientes();
+        $dato= null;
 
-                        FROM    llx_societe, llx_societe_extrafields
-                        WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
-                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-                        ORDER BY code_client ASC";
-
-        $this->db->begin();
-        $resql = $this->db->query($sql);
-
-        if ($resql)
+        if($clientes != null)
         {
-            $num = $this->db->num_rows($resql);
-            $i = 0;
-            if ($num)
+
+            foreach($clientes as $cliente)
             {
-                    while ($i < $num)
-                    {
-                            $obj = $this->db->fetch_object($resql);
-                            if ($obj)
-                            {
-                                    // You can use here results
-                                    $respuesta[]= array(
-										'rowid'=> $obj->rowid,
-                                        'code_client'=> $obj->code_client,
-                                        'nom'=>$obj->lastname,
-                                        'address'=> $obj->address
-                                    );
-                            }
-                            $i++;
-                    }
+
+                $cantidades = $this->getFacturas($cliente['rowid']);
+
+                $dato[]= array( "codigo" => $cliente['code_client'],
+
+                "nombre" => $cliente['nom'],
+                "direccion" => $cliente['address'],
+                "importe" => $cantidades['valor'],
+                "cantidad" => $cantidades['cantidad']
+
+                );
+
             }
-        }else{ $respuesta = 'hay un error en la conexion';}
-
-        $this->db->commit();
-
-        return  $respuesta;
 
 
+        }
+        else{
 
+            $dato= "No hay Clientes asignados";
+        }
+
+        return $dato;
 
 }
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function getClientes()  //trae los clientes correspondientes al vendedor
+    {
+
+    $sql="	SELECT  llx_societe.code_client, 
+            llx_societe.rowid , 
+            llx_societe.nom, llx_societe.address
+
+            FROM    llx_societe, llx_societe_extrafields
+            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
+            AND     llx_societe.rowid = llx_societe_extrafields.fk_object
+            ORDER BY code_client ASC";
+
+            $resql = $this->db->query($sql);
+
+            if ($resql)
+            {
+                $num = $this->db->num_rows($resql);
+                $i = 0;
+                if ($num)
+                {
+                        while ($i < $num)
+                        {
+                                $obj = $this->db->fetch_object($resql);
+                                if ($obj)
+                                {
+                                        // You can use here results
+                                        $respuesta[]= array(
+                                            'rowid'=> $obj->rowid,
+                                            'code_client'=> $obj->code_client,
+                                            'nom'=>$obj->nom,
+                                            'address'=> $obj->address
+                                        );
+                                }
+                                $i++;
+                        }
+                }
+            }else{ $respuesta = 'hay un error en la conexion';}
+
+            $this->db->free($resql);
+            return  $respuesta;
+
+
+    }
+
+
+
+    function getFacturas($id_cliente)
+    {
+
+    $sql ="SELECT rowid, datef FROM llx_facture
+    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef ASC ";
+
+  
+        $res = $this->db->query($sql);
+        
+        // si devuelve producto  entro al proceso
+        if ($res){
+
+            $num = $this->db->num_rows($res);
+
+            $i = 0;
+            if ($num)
+            {
+                $tmp_cantidad=0;
+                $tmp_valor =0;
+
+                    while ($i < $num)
+                    {
+                            $factura = $this->db->fetch_object($res);
+                            if ($factura)
+                            {
+
+                        // llamar al metodo que traE las cantidades 
+                     $dato= $this->getcantidadDetalle($factura->rowid);
+
+                     
+                     $tmp_cantidad= $tmp_cantidad +(int)$dato['cantidad'];
+                     $tmp_valor = $tmp_valor + (float)$dato['valor'];
+                                    
+                            }
+                            $i++;
+                    }
+            }
+
+
+                $datos= ['cantidad'=> $tmp_cantidad,
+                         'valor'=> $tmp_valor
+                ];
+
+                $this->db->free($res);
+                return $datos;
+        }
+
+    }
+
+
+function getcantidadDetalle($id_factura_detalle)
+
+{
+
+
+    $sql ="SELECT SUM(qty) AS productos, SUM(total_ht) AS valor FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
+
+
+        $res = $this->db->query($sql);
+        $num = $this->db->num_rows($res);
+        // si devuelve producto  entro al proceso
+        if ($num){
+
+            $obj = $this->db->fetch_object($res);
+            if ($obj)
+            {
+
+                $datos= ['cantidad'=> $obj->productos,
+                         'valor'=> $obj->valor
+                ];
+            }
+
+            
+        }
+
+return $datos;
+}
+
+
+
+
+
+private function change_fecha($fecha)
+{
+
+    $dia = substr($fecha, 0, 2);
+    $mes   = substr($fecha, 3, 2);
+    $ano = substr($fecha, -4);
+    // fechal final realizada el cambio de formato a las fechas europeas
+    $fecha = $ano . '-' . $mes . '-' . $dia;
+
+    return $fecha;
+
+}
 
 
 

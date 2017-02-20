@@ -96,47 +96,6 @@ public function getVendedores()  // me trae todos los vendedores activos
 
 
 
-
-
-public function getVendedor($id)
-{
-
-         $sql= "SELECT lastname, `firstname` FROM 
-         `llx_user_extrafields`, `llx_user` WHERE 
-         `codvendedor`=".$idVendedor."  AND  
-         `llx_user_extrafields`.`fk_object`= `llx_user`.`rowid`";
-
-//$this->db->begin();
- $resql= $this->db->query($sql); // hago la consulta
-
-		if ($resql) {     //  verifico que se hizo
-			$numrows = $this->db->num_rows($resql);
-
-            $datos=array();
-			while ($obj = $this->db->fetch_object($resql)) {
-
-
-					$datos[]= array('producto'=>$obj->label, 'id'=>$obj->rowid, 'price'=> number_format($obj->price, 2, ',', '')); 
-                    	
-			}
-
-			return $datos;
-
-			$this->db->free($resql);
-
-		} else {
-			$this->errors[] = 'Error ' . $this->db->lasterror();
-			dol_syslog(__METHOD__ . ' ' . join(',', $this->errors), LOG_ERR);
-
-			return -1;
-		}
-
-}
-
-
-
-
-
 public function getClienteAsociado($codVendedor)
 {
 
@@ -190,6 +149,44 @@ public function getClienteAsociado($codVendedor)
 
 
 
+
+
+
+ 	public function getCodVendedor($idVendedor)  // a partir de id de Uusario  este metodo devuelve el numero de vendedor del 1 al 5 
+	 
+	{
+
+         $sql= "SELECT u.firstname, u.lastname, extra.codvendedor FROM 
+         llx_user_extrafields as extra, llx_user as u WHERE 
+         u.rowid= ". $idVendedor." AND  
+         extra.fk_object = u.rowid";
+
+
+            $resql = $this->db->query($sql);
+        if ($resql)
+        {
+            $num = $this->db->num_rows($resql);
+            $i = 0;
+            if ($num)
+            {
+
+				$obj = $this->db->fetch_object($resql);
+				if ($obj)
+				{
+						// You can use here results
+						$respuesta = $obj->codvendedor ;
+				}
+
+            }
+        }else{
+
+            $respuesta = 'Sin Vendedor Asignado';
+        }
+
+
+        return  $respuesta;
+
+	}
 
 
 
