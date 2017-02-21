@@ -60,15 +60,23 @@ function getReporte()
             foreach($clientes as $cliente)
             {
 
-                $cantidades = $this->getFacturas($cliente['rowid']);
+                $cantidades = $this->getFacturas($cliente['rowid']);  // traigo las cantidades 
+
+                
+                $ultimaFecha = $this->lastInvoiceDate($cliente['rowid']); // traigo la ultima fecha que le facturaron al cliente
+
+
+                (is_null($cantidades['valor'])) ? $valor = 0: $valor = $cantidades['valor'];
+
+                (is_null($cantidades['cantidad'])) ? $cantidad = 0: $cantidad = $cantidades['cantidad'];
 
                 $dato[]= array( "codigo" => $cliente['code_client'],
 
                 "nombre" => $cliente['nom'],
                 "direccion" => $cliente['address'],
-                "importe" => $cantidades['valor'],
-                "cantidad" => $cantidades['cantidad']
-
+                "importe" => $valor,
+                "cantidad" =>$cantidad,
+                "ultimaFactura" => $ultimaFecha['last']
                 );
 
                 $total_prod= $total_prod + $cantidades['cantidad'] ;
@@ -96,12 +104,6 @@ function getReporte()
        return  array($datoSort, $total);
 
 
-
-
-
-
-        
-
 }
 
 
@@ -110,9 +112,38 @@ function getReporte()
 
 
 
+function lastInvoiceDate($id_cliente)
+
+{
+    $sql ="SELECT rowid,  DATE_FORMAT(datef,'%d/%m/%Y') AS datef  FROM llx_facture
+    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC LIMIT 1 ";
+
+  
+        $res = $this->db->query($sql);
+        $num = $this->db->num_rows($res);
+        // si devuelve producto  entro al proceso
+        if ($num){
+
+        $obj = $this->db->fetch_object($res);
+            if ($obj)
+            {
+                
+                // aqui guardo el valor total de ventas
+                (empty($obj->datef)) ? $valor = "Sin registro": $valor = $obj->datef;
+
+                $fecha=array('last'=> $valor);
+
+            }
+     
+        }
+
+
+        return $fecha;
 
 
 
+
+}
 
 
 
@@ -172,8 +203,8 @@ function getReporte()
     function getFacturas($id_cliente)
     {
 
-    $sql ="SELECT rowid, datef FROM llx_facture
-    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC ";
+        $sql ="SELECT rowid, datef FROM llx_facture
+        WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC ";
 
   
         $res = $this->db->query($sql);
@@ -195,21 +226,31 @@ function getReporte()
                             if ($factura)
                             {
 
-                        // llamar al metodo que traE las cantidades 
-                     $dato= $this->getcantidadDetalle($factura->rowid);
+                                // llamar al metodo que traE las cantidades 
+                            $dato= $this->getcantidadDetalle($factura->rowid);
 
-                     
-                     $tmp_cantidad= $tmp_cantidad +(int)$dato['cantidad'];
-                     $tmp_valor = $tmp_valor + (float)$dato['valor'];
+                            
+                            $tmp_cantidad= $tmp_cantidad +$dato['cantidad'];
+                            $tmp_valor = $tmp_valor + $dato['valor'];
                                     
                             }
                             $i++;
+
+
+
                     }
+
+
+                    $cantidad = ($tmp_cantidad == null) ? $cantidad=0: $cantidad= $tmp_cantidad;
+
+                    $valor = ($tmp_valor == null) ? $valor=0: $valor= $tmp_valor;
+
             }
 
 
-                $datos= ['cantidad'=> $tmp_cantidad,
-                         'valor'=> $tmp_valor
+                $datos= ['cantidad'=> $cantidad,
+                         'valor'=> $valor
+
                 ];
 
                 $this->db->free($res);
@@ -219,13 +260,13 @@ function getReporte()
     }
 
 
-function getcantidadDetalle($id_factura_detalle)
+function getcantidadDetalle($id_factura_detalle)   // devuelve por cliente la cantidad de producto vendido y el valor
 
 {
-
-
-    $sql ="SELECT SUM(qty) AS productos, SUM(total_ht) AS valor FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
-
+ 
+    $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
+    FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
+   
 
         $res = $this->db->query($sql);
         $num = $this->db->num_rows($res);
@@ -235,6 +276,7 @@ function getcantidadDetalle($id_factura_detalle)
             $obj = $this->db->fetch_object($res);
             if ($obj)
             {
+
 
                 $datos= ['cantidad'=> $obj->productos,
                          'valor'=> $obj->valor

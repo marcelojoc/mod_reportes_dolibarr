@@ -48,7 +48,7 @@ $respuesta=null;
 $respuesta= $reporte->getreporte();
 
        
-//var_dump($reporte);
+//var_dump($respuesta);
 
 //  switch ($consulta)
 // {
