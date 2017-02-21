@@ -34,7 +34,7 @@ $reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_produc
 $respuesta=null;
 
 		
-		//$respuesta = $vendedor->getCodVendedor(8);
+//$respuesta = $vendedor->getCodVendedor(8);
 
 //$prueba = $ruta->getRutas();
 

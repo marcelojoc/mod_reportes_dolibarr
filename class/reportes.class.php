@@ -84,7 +84,7 @@ function getReporte()
 
             }
 
-                 $total[]= array( "total_prod" => $total_prod,
+                 $total= array( "total_prod" => $total_prod,
                                   "total_importe" => $total_importe
 
                 );

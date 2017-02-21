@@ -121,10 +121,14 @@ console.log(totales);
         for (var i =0 ; i < datos.length; i++)
         {
             
-                var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" + datos[i]['direccion'] + "</td><td>" + datos[i]['importe'] + "</td><td>" + datos[i]['cantidad'] + "</td><td> "+datos[i]['ultimaFactura']+"   </td></tr>"
+                var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" + datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] + "</td><td>" + datos[i]['cantidad'] + "</td><td> "+datos[i]['ultimaFactura']+"   </td></tr>"
 
                 $('#table_body').append(lista.replace('null', 'Sin registro'));
 
         }
 
+
+var totales = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td>"+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+        				
+$('#table_body').append(totales);
 }
