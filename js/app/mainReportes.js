@@ -137,7 +137,7 @@ console.log(totales);
         }
 
 
-var totales = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td>"+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+var totales = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
         				
 $('#table_body').append(totales);
 }

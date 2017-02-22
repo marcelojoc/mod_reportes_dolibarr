@@ -52,42 +52,48 @@ function getReporte()
 
         $clientes = $this->getClientes();
         $dato= null;
-
+        $clientes_totales= count($clientes, 0);
+var_dump(count($clientes, 0));
         if($clientes != null)
         {
             $total_prod=0;
             $total_importe=0;
-            foreach($clientes as $cliente)
-            {
+                foreach($clientes as $cliente)
+                {
 
-                $cantidades = $this->getFacturas($cliente['rowid']);  // traigo las cantidades 
+                    $cantidades = $this->getFacturas($cliente['rowid']);  // traigo las cantidades 
 
-                
-                $ultimaFecha = $this->lastInvoiceDate($cliente['rowid']); // traigo la ultima fecha que le facturaron al cliente
+                    
+                    $ultimaFecha = $this->lastInvoiceDate($cliente['rowid']); // traigo la ultima fecha que le facturaron al cliente
 
 
-                (is_null($cantidades['valor'])) ? $valor = 0: $valor = $cantidades['valor'];
+                    (is_null($cantidades['valor'])) ? $valor = 0: $valor = $cantidades['valor'];
 
-                (is_null($cantidades['cantidad'])) ? $cantidad = 0: $cantidad = $cantidades['cantidad'];
+                    (is_null($cantidades['cantidad'])) ? $cantidad = 0: $cantidad = $cantidades['cantidad'];
 
-                $dato[]= array( "codigo" => $cliente['code_client'],
+                    $dato[]= array( "codigo" => $cliente['code_client'],
 
-                "nombre" => $cliente['nom'],
-                "direccion" => $cliente['address'],
-                "importe" => $valor,
-                "cantidad" =>$cantidad,
-                "ultimaFactura" => $ultimaFecha['last']
-                );
+                    "nombre" => $cliente['nom'],
+                    "direccion" => $cliente['address'],
+                    "importe" => $valor,
+                    "cantidad" =>$cantidad,
+                    "ultimaFactura" => $ultimaFecha['last']
+                    );
 
-                $total_prod= $total_prod + $cantidades['cantidad'] ;
-                $total_importe= $total_importe + $cantidades['valor'] ;
+                    $total_prod= $total_prod + $cantidades['cantidad'] ;
+                    $total_importe= $total_importe + $cantidades['valor'] ;
 
-            }
 
-                 $total= array( "total_prod" => $total_prod,
-                                  "total_importe" => $total_importe
 
-                );
+
+                }
+
+            $total= array( "total_prod" => $total_prod,
+                            "total_importe" => $total_importe,
+                            "total_clientes"=> $clientes_totales,
+                            "clientes_con_ventas"=>$clientes_ventas,
+                            "clientes_sin_ventas"=>$clientes_totales - $clientes_ventas
+            );
 
 
         }
