@@ -52,7 +52,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
  <!-- Page Content -->
-    <div class="container-fluid " id="foo">
+    <div class="container-fluid " id="cont_principal">
 
 
 <div class="row">
@@ -193,10 +193,10 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
 
-<div class="row segundo" >
+<div class="row " id="content_table" >
 
                     <div class="panel panel-default">
-                    <div class="panel-heading">Reporte Nombre vendedor</div>
+                    <div class="panel-heading">Reporte Ventas</div>
                     <div class="panel-body">
 
 

@@ -1,7 +1,5 @@
 (function(){
 
-
-
 $("#search_btn").on('click', function(e){
 
 e.preventDefault();
@@ -19,13 +17,10 @@ var data= {
 
 get_reporte(data);
 
-
-
 })
 
 
-
-var opts = {
+opts = {
   lines: 13 // The number of lines to draw
 , length: 28 // The length of each line
 , width: 10 // The line thickness
@@ -47,8 +42,8 @@ var opts = {
 , hwaccel: false // Whether to use hardware acceleration
 , position: 'absolute' // Element positioning
 }
-// var target = document.getElementById('foo')
-// var spinner = new Spinner(opts).spin(target);
+target = document.getElementById('cont_principal')
+spinner = new Spinner(opts);
 
 
 // $(window).scroll(function(){
@@ -85,21 +80,30 @@ function get_reporte(parametro= null){
 
 				success : function(json) {
 
-                        
                         cargarTabla(json);
 				},
 
 				error : function(xhr, status) {
-					alert('Disculpe, existió un problema '+ status + xhr );
+					alert('Disculpe, existió un problema ');
 					//location.reload(true);
+                    //alert('Disculpe, existió un problema '+ status + xhr );
 
 				},
 
-				// código a ejecutar sin importar si la petición falló o no
-				complete : function(xhr, status) {
+                beforeSend: function(){
+                // Code to display spinner
+                    
+                    $('#content_table').addClass('opacidad');
+                    spinner.spin(target)
 
-					//loadComponent("");
-				}
+                },
+
+                complete: function(){
+                // Code to hide spinner.
+                    $('#content_table').removeClass('opacidad');
+                    spinner.stop()
+                }
+
 
 		})
 
@@ -121,7 +125,12 @@ console.log(totales);
         for (var i =0 ; i < datos.length; i++)
         {
             
-                var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" + datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] + "</td><td>" + datos[i]['cantidad'] + "</td><td> "+datos[i]['ultimaFactura']+"   </td></tr>"
+                // fila de la tabla con los datos modificados
+                var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" 
+                + datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
+                + " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
+                + "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
+                + datos[i]['ultimaFactura']+"   </td></tr>"
 
                 $('#table_body').append(lista.replace('null', 'Sin registro'));
 
@@ -131,4 +140,14 @@ console.log(totales);
 var totales = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td>"+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
         				
 $('#table_body').append(totales);
+}
+
+
+function porcentaje( valorTotal, valor2)
+{
+
+    var result = (valor2 * 100) / valorTotal;
+
+    return result.toFixed(2);
+
 }
