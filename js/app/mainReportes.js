@@ -20,6 +20,13 @@
 	})
 
 
+
+	$("a[href='#top']").on('click', function() {
+		$("html, body").animate({ scrollTop: 0 }, "slow");
+		return false;
+	});
+
+
 	opts = {
 	lines: 13 // The number of lines to draw
 	, length: 28 // The length of each line
@@ -104,8 +111,6 @@
 	var datos= datos_json[0];
 	var totales = datos_json[1];
 
-	console.log(totales);
-
 		$('#table_body tr').remove();
 			for (var i =0 ; i < datos.length; i++)
 			{
@@ -122,9 +127,18 @@
 			}
 
 
-		var totales = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+		var total_tabla = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
 							
-	$('#table_body').append(totales);
+	$('#table_body').append(total_tabla);
+
+		var clientes_con_ventas= "Total Clientes <span class='label label-default'>"+ totales['total_clientes']
+		clientes_con_ventas+= "</span> -  Clientes con ventas <span class='label label-default'>"+ totales['clientes_con_ventas'];
+		clientes_con_ventas+= "</span> - Clientes sin ventas <span class='label label-default'>"+ totales['clientes_sin_ventas']+"</span>"
+
+		$('#resumen_clientes').html("");
+		$('#resumen_clientes').html(clientes_con_ventas);
+
+
 	}
 
 

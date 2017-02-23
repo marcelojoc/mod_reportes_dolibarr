@@ -85,7 +85,7 @@ function getReporte()
                     $total_prod= $total_prod + $cantidades['cantidad'] ;
                     $total_importe= $total_importe + $cantidades['valor'] ;
 
-                    if($cantidades['facturas'] > 0) // quiere decir que por lo menos tiene una factura a su nombre en las fechas indicadas
+                    if($cantidades['valor'] > 0) // quiere decir que por lo menos tiene una factura a su nombre en las fechas indicadas
                     {
 
                         $c_con_ventas++ ;

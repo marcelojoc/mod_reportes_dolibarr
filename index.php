@@ -198,12 +198,12 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                     <div class="panel panel-default">
                     <div class="panel-heading">Reporte Ventas</div>
                     <div class="panel-body">
-
-
-
-
                
-                            
+                     <h3 id= "resumen_clientes"></h3>
+
+                     <br>
+
+
                     <table class="table table-bordered table-responsive" id= "table_complete" >
                         <thead>
                         <tr>
@@ -222,17 +222,16 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                         </tbody>
                     </table>
 
-                   
-                        
+                    <div class="row">
+                        <div class="col-md-12 text-center">
 
+                             <a href="#" id="top" class="scroll-repo" alt= "ir arriba"><span class="glyphicon glyphicon-chevron-up btn-lg" aria-hidden="true"></span></a>
 
-
-
+                        </div>
+                    </div>
+                    
                     </div>
                     </div>
-
-
-
 
 </div>
 
@@ -242,7 +241,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; TMS group 2017</p>
                 </div>
             </div>
         </footer>
