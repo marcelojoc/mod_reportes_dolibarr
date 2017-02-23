@@ -53,16 +53,18 @@ function getReporte()
         $clientes = $this->getClientes();
         $dato= null;
         $clientes_totales= count($clientes, 0);
-var_dump(count($clientes, 0));
+
+
+
         if($clientes != null)
         {
             $total_prod=0;
             $total_importe=0;
+            $c_con_ventas=0;
                 foreach($clientes as $cliente)
                 {
 
                     $cantidades = $this->getFacturas($cliente['rowid']);  // traigo las cantidades 
-
                     
                     $ultimaFecha = $this->lastInvoiceDate($cliente['rowid']); // traigo la ultima fecha que le facturaron al cliente
 
@@ -83,16 +85,21 @@ var_dump(count($clientes, 0));
                     $total_prod= $total_prod + $cantidades['cantidad'] ;
                     $total_importe= $total_importe + $cantidades['valor'] ;
 
+                    if($cantidades['facturas'] > 0) // quiere decir que por lo menos tiene una factura a su nombre en las fechas indicadas
+                    {
 
+                        $c_con_ventas++ ;
 
+                    }
 
                 }
+
 
             $total= array( "total_prod" => $total_prod,
                             "total_importe" => $total_importe,
                             "total_clientes"=> $clientes_totales,
-                            "clientes_con_ventas"=>$clientes_ventas,
-                            "clientes_sin_ventas"=>$clientes_totales - $clientes_ventas
+                            "clientes_con_ventas"=>$c_con_ventas,
+                            "clientes_sin_ventas"=>$clientes_totales - $c_con_ventas
             );
 
 
@@ -101,9 +108,6 @@ var_dump(count($clientes, 0));
 
             $dato= "No hay Clientes asignados";
         }
-
-
-
 
         $datoSort= $this->orderMultiDimensionalArray($dato, 'cantidad', true);
 
@@ -163,7 +167,7 @@ function lastInvoiceDate($id_cliente)
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
 
-    $sql="	SELECT  llx_societe.code_client, 
+        $sql="	SELECT  llx_societe.code_client, 
             llx_societe.rowid , 
             llx_societe.nom, llx_societe.address
 
@@ -255,7 +259,8 @@ function lastInvoiceDate($id_cliente)
 
 
                 $datos= ['cantidad'=> $cantidad,
-                         'valor'=> $valor
+                         'valor'=> $valor,
+                         'facturas'=> $num
 
                 ];
 
