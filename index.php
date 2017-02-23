@@ -42,11 +42,6 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
     $productos = new My_Productos($db);
 
- 
-
-
-
-
 
  ?>
 

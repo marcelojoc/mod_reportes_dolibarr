@@ -6,18 +6,28 @@
 
 	var fecha_ini = $('#fecha_inicio').val();
 	var fecha_fin = $('#fecha_fin').val();
-	var vendedor  = $('#selVendedor').val();
-	var producto  = $('#selProducto').val();
-	var data= {
-				inicio  :  fecha_ini,
-				fin     :  fecha_fin,
-				producto:  producto,
-				vendedor:  vendedor
-			}
+	if (fecha_ini != "" && fecha_fin != ""){
 
-	get_reporte(data);
 
-	})
+		var vendedor  = $('#selVendedor').val();
+		var producto  = $('#selProducto').val();
+		var data= {
+			inicio  :  fecha_ini,
+			fin     :  fecha_fin,
+			producto:  producto,
+			vendedor:  vendedor
+		}
+
+		get_reporte(data);
+
+	}else{
+
+		alert('No especifico los campos de fecha');
+
+
+	}
+
+})
 
 
 
