@@ -19,7 +19,7 @@ completos y extendida para algunos datos mas.
 class Reportes 
 {
     var $db;      // instancia de conexion
-	var $id_usuario; // el identificador del usuario (vendedores)
+	var $id_usuario; // el identificador del usuario (vendedores)  o todos
 	var $codVendedor;  // codigo de vendedor
 
 	var $fecha_ini;   // fecha de inicio rango de fecha
@@ -34,6 +34,7 @@ class Reportes
         $this->fecha_ini= $this->change_fecha($fecha_ini);
         $this->fecha_fin= $this->change_fecha($fecha_fin);		
         $this->producto= $producto;
+
 		$tercero = new Tercero($this->db, $this->id_usuario);
 		$this->codVendedor = $tercero->getCodVendedor($this->id_usuario);
 	}
@@ -49,7 +50,7 @@ class Reportes
 
 function getReporte()
 {
-
+        
         $clientes = $this->getClientes();
         $dato= null;
         $clientes_totales= count($clientes, 0);
@@ -150,9 +151,6 @@ function lastInvoiceDate($id_cliente)
 
         return $fecha;
 
-
-
-
 }
 
 
@@ -167,14 +165,31 @@ function lastInvoiceDate($id_cliente)
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
 
-        $sql="	SELECT  llx_societe.code_client, 
-            llx_societe.rowid , 
-            llx_societe.nom, llx_societe.address
+        if ($codVendedor != "todos")
+        {
 
-            FROM    llx_societe, llx_societe_extrafields
-            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
-            AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-            ORDER BY code_client desc";
+            $sql="	SELECT  llx_societe.code_client, 
+                        llx_societe.rowid , 
+                        llx_societe.nom, llx_societe.address
+
+                        FROM    llx_societe, llx_societe_extrafields
+                        WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
+                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object
+                        ORDER BY code_client desc";
+
+        }else{
+
+
+            $sql= " SELECT  llx_societe.code_client, 
+                llx_societe.rowid , 
+                llx_societe.nom, llx_societe.address
+                FROM    llx_societe WHERE  llx_societe.status = 1
+                ORDER BY code_client DESC";
+
+
+        }
+
+
 
             $resql = $this->db->query($sql);
 
