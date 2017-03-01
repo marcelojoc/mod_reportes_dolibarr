@@ -100,7 +100,7 @@ public function getClienteAsociado($codVendedor)
 {
 
 
-if ($codVendedor != "todos")
+if ($codVendedor != 0)
 {
 
 	$sql="	SELECT  llx_societe.code_client, 

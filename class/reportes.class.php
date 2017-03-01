@@ -55,13 +55,12 @@ function getReporte()
         $dato= null;
         $clientes_totales= count($clientes, 0);
 
-
-
         if($clientes != null)
         {
             $total_prod=0;
             $total_importe=0;
             $c_con_ventas=0;
+
                 foreach($clientes as $cliente)
                 {
 
@@ -165,7 +164,7 @@ function lastInvoiceDate($id_cliente)
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
 
-        if ($codVendedor != "todos")
+        if ($codVendedor != 0)
         {
 
             $sql="	SELECT  llx_societe.code_client, 
