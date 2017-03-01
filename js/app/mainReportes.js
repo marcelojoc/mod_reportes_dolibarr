@@ -159,3 +159,48 @@
 		return result.toFixed(2);
 
 	}
+
+
+	function PrintPDF(parametro= null){
+
+			
+			$.ajax(
+					{
+					url : 'printTable.php',
+					type: "POST",
+					data : {
+							consulta: 'get_valProduct',
+							dato    : parametro
+							},
+					dataType: 'JSON',
+
+					success : function(json) {
+
+							cargarTabla(json);
+					},
+
+					error : function(xhr, status) {
+						alert('Disculpe, existió un problema ');
+						//location.reload(true);
+						//alert('Disculpe, existió un problema '+ status + xhr );
+
+					},
+
+					beforeSend: function(){
+					// Code to display spinner
+						
+						$('#content_table').addClass('opacidad');
+						spinner.spin(target)
+
+					},
+
+					complete: function(){
+					// Code to hide spinner.
+						$('#content_table').removeClass('opacidad');
+						spinner.stop()
+					}
+
+
+			})
+
+		}

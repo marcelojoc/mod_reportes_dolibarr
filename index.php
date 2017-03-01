@@ -78,8 +78,14 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
 
-        <div class="col-md-4 col-md-offset-2">
-            <!--<button type="button" class="btn btn-primary btn-block">Primary</button>-->
+        <div class="col-md-2 col-md-offset-4">
+            <button type="button" class="btn btn-info  btn-block" >Imprimir PDF</button>
+    
+                <!--<button class="btn btn-warning  dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Large button <span class="caret"></span>
+                </button>-->
+
+                </div>
 
         </div>
 

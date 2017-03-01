@@ -21,6 +21,21 @@ function LoadData($file)
     return $data;
 }
 
+
+function BasicTable($header, $data)
+{
+    // Cabecera
+    foreach($header as $col)
+        $this->Cell(34,6,$col,1);
+    $this->Ln();
+    // Datos
+    // foreach($data as $row)
+    // {
+    //     foreach($row as $col)
+    //         $this->Cell(40,6,$col,1);
+    //     $this->Ln();
+    // }
+}
 // // Tabla simple
 // function BasicTable($header, $data)
 // {
@@ -60,60 +75,61 @@ function LoadData($file)
 // }
 
 // Tabla coloreada
-function FancyTable($header, $data)
-{
+// function FancyTable($header, $data)
+// {
 
-    $this->SetFont('Arial','',8);
-    // Color de fondo
-    $this->SetFillColor(200,220,255);
-    // Título
-    $this->Cell(0,9,"Reporte de Ruta ".$_SESSION["vendorPrint"],0,1,'C',true);
-    // Salto de línea
-    $this->Ln(4);
-    // Colores, ancho de línea y fuente en negrita
-    $this->SetFillColor(255,255,255);
-    $this->SetTextColor(0);
-    $this->SetDrawColor(0,0,0);
-    $this->SetLineWidth(.3);
-    $this->SetFont('','B');
-    // Cabecera
-    $w = array(20, 80, 80, 10);
-    for($i=0;$i<count($header);$i++)
-        $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
-    $this->Ln();
-    // Restauración de colores y fuentes
-    $this->SetFillColor(255,255,255);
-    $this->SetTextColor(0);
-    $this->SetFont('');
-    // Datos
+//     $this->SetFont('Arial','',8);
+//     // Color de fondo
+//     $this->SetFillColor(200,220,255);
+//     // Título
+//     $this->Cell(0,9,"Reporte de Ruta ",0,1,'C',true);
+//     // Salto de línea
+//     $this->Ln(4);
+//     // Colores, ancho de línea y fuente en negrita
+//     $this->SetFillColor(255,255,255);
+//     $this->SetTextColor(0);
+//     $this->SetDrawColor(0,0,0);
+//     $this->SetLineWidth(.3);
+//     $this->SetFont('','B');
+//     // Cabecera
+//     $w = array(20, 80, 80, 10);
+//     for($i=0;$i<count($header);$i++)
+//         $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
+//     $this->Ln();
+//     // Restauración de colores y fuentes
+//     $this->SetFillColor(255,255,255);
+//     $this->SetTextColor(0);
+//     $this->SetFont('');
+//     // Datos
     
-    foreach($data as $row)
-    {
-        $this->Cell($w[0],6,$row['cod_client'],'LRB',0,'C');
-        $this->Cell($w[1],6,$row['nom'],'LRB',0,'L');
-        $this->Cell($w[2],6,$row['adress'],'LRB',0,'L');
-        $this->Cell($w[3],6,$row['ruta'],'LRB',0,'C');
-        $this->Ln();
+//     foreach($data as $row)
+//     {
+//         $this->Cell($w[0],6,$row['cod_client'],'LRB',0,'C');
+//         $this->Cell($w[1],6,$row['nom'],'LRB',0,'L');
+//         $this->Cell($w[2],6,$row['adress'],'LRB',0,'L');
+//         $this->Cell($w[3],6,$row['nom'],'LRB',0,'L');
+//         $this->Cell($w[4],6,$row['adress'],'LRB',0,'L');
+//         $this->Cell($w[5],6,$row['ruta'],'LRB',0,'C');
+//         $this->Ln();
         
-    }
-    // Línea de cierre
-    //$this->Cell(array_sum($w),0,'','T');
-}
+//     }
+//     // Línea de cierre
+//     //$this->Cell(array_sum($w),0,'','T');
+// }
 }
 
 
 
 //$data = unserialize($_SESSION["dataPrint"]);
 
-if (isset($_SESSION["dataPrint"])){
 
 
     $pdf = new PDF();
     // Títulos de las columnas
 
-    $header = array('Codigo', 'Nombre', 'Direccion', 'Ruta');
+    $header = array('Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha');
     // Carga de datos
-    $data = $_SESSION["dataPrint"];
+    $data = ['Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha'];
     $pdf->SetFont('Arial','',11);
     
     $pdf->AddPage();
@@ -122,16 +138,9 @@ if (isset($_SESSION["dataPrint"])){
     // $pdf->AddPage();
     // $pdf->ImprovedTable($header,$data);
     // $pdf->AddPage();
-    $pdf->FancyTable($header,$data);
-    $pdf->Output();
+    $pdf->BasicTable($header,$data);
+    $pdf->Output("reporte.pdf", "D");
 
-
-
-
-}else{
-
-    echo "No hay datos disponibles para imprimir";
-}
 
 
 ?>
