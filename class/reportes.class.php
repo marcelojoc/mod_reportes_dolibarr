@@ -164,7 +164,7 @@ function lastInvoiceDate($id_cliente)
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
 
-        if ($codVendedor != 0)
+        if ($this->codVendedor != 0)
         {
 
             $sql="	SELECT  llx_societe.code_client, 
