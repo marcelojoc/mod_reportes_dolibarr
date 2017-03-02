@@ -49,7 +49,7 @@
 	// 		vendedor:  vendedor
 	// 	}
 
-	// 	get_reporte(data);
+	 	printPDF();
 
 	// }else{
 
@@ -117,6 +117,8 @@
 
 					success : function(json) {
 
+							localStorage.removeItem('tabla_venta');
+							localStorage.setItem('tabla_venta', JSON.stringify(json));
 							cargarTabla(json);
 					},
 
@@ -153,35 +155,35 @@
 	function cargarTabla(datos_json)
 	{
 
-	var datos= datos_json[0];
-	var totales = datos_json[1];
+		var datos= datos_json[0];
+		var totales = datos_json[1];
 
-		$('#table_body tr').remove();
-			for (var i =0 ; i < datos.length; i++)
-			{
-				
-					// fila de la tabla con los datos modificados
-					var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" 
-					+ datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
-					+ " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
-					+ "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
-					+ datos[i]['ultimaFactura']+"   </td></tr>"
+			$('#table_body tr').remove();
+				for (var i =0 ; i < datos.length; i++)
+				{
+					
+						// fila de la tabla con los datos modificados
+						var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" 
+						+ datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
+						+ " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
+						+ "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
+						+ datos[i]['ultimaFactura']+"   </td></tr>"
 
-					$('#table_body').append(lista.replace('null', 'Sin registro'));
+						$('#table_body').append(lista.replace('null', 'Sin registro'));
 
-			}
+				}
 
 
-		var total_tabla = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
-							
-	$('#table_body').append(total_tabla);
+			var total_tabla = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+								
+			$('#table_body').append(total_tabla);
 
-		var clientes_con_ventas= "Total Clientes <span class='label label-default'>"+ totales['total_clientes']
-		clientes_con_ventas+= "</span> -  Clientes con ventas <span class='label label-default'>"+ totales['clientes_con_ventas'];
-		clientes_con_ventas+= "</span> - Clientes sin ventas <span class='label label-default'>"+ totales['clientes_sin_ventas']+"</span>"
+			var clientes_con_ventas= "Total Clientes <span class='label label-default'>"+ totales['total_clientes']
+			clientes_con_ventas+= "</span> -  Clientes con ventas <span class='label label-default'>"+ totales['clientes_con_ventas'];
+			clientes_con_ventas+= "</span> - Clientes sin ventas <span class='label label-default'>"+ totales['clientes_sin_ventas']+"</span>"
 
-		$('#resumen_clientes').html("");
-		$('#resumen_clientes').html(clientes_con_ventas);
+			$('#resumen_clientes').html("");
+			$('#resumen_clientes').html(clientes_con_ventas);
 
 
 	}
@@ -196,22 +198,23 @@
 	}
 
 
-	function PrintPDF(parametro= null){
+	function printPDF(){
 
+		
 			
 			$.ajax(
 					{
 					url : 'printTable.php',
 					type: "POST",
 					data : {
-							consulta: 'get_valProduct',
-							dato    : parametro
+							consulta: 'print_pdf',
+							tabla    : parametro
 							},
 					dataType: 'JSON',
 
 					success : function(json) {
 
-							cargarTabla(json);
+							console.log (json);
 					},
 
 					error : function(xhr, status) {
@@ -224,15 +227,15 @@
 					beforeSend: function(){
 					// Code to display spinner
 						
-						$('#content_table').addClass('opacidad');
-						spinner.spin(target)
+						// $('#content_table').addClass('opacidad');
+						// spinner.spin(target)
 
 					},
 
 					complete: function(){
 					// Code to hide spinner.
-						$('#content_table').removeClass('opacidad');
-						spinner.stop()
+						// $('#content_table').removeClass('opacidad');
+						// spinner.stop()
 					}
 
 

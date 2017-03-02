@@ -22,19 +22,20 @@ function LoadData($file)
 }
 
 
+// Tabla simple
 function BasicTable($header, $data)
 {
     // Cabecera
     foreach($header as $col)
-        $this->Cell(34,6,$col,1);
+        $this->Cell(40,7,$col,1);
     $this->Ln();
     // Datos
-    // foreach($data as $row)
-    // {
-    //     foreach($row as $col)
-    //         $this->Cell(40,6,$col,1);
-    //     $this->Ln();
-    // }
+    foreach($data as $row)
+    {
+        foreach($row as $col)
+            $this->Cell(40,6,$col,1);
+        $this->Ln();
+    }
 }
 // // Tabla simple
 // function BasicTable($header, $data)
@@ -53,26 +54,26 @@ function BasicTable($header, $data)
 // }
 
 // // Una tabla más completa
-// function ImprovedTable($header, $data)
-// {
-//     // Anchuras de las columnas
-//     $w = array(40, 35, 45, 40);
-//     // Cabeceras
-//     for($i=0;$i<count($header);$i++)
-//         $this->Cell($w[$i],7,$header[$i],1,0,'C');
-//     $this->Ln();
-//     // Datos
-//     foreach($data as $row)
-//     {
-//         $this->Cell($w[0],6,$row[0],'LR');
-//         $this->Cell($w[1],6,$row[1],'LR');
-//         $this->Cell($w[2],6,number_format($row[2]),'LR',0,'R');
-//         $this->Cell($w[3],6,number_format($row[3]),'LR',0,'R');
-//         $this->Ln();
-//     }
-//     // Línea de cierre
-//     $this->Cell(array_sum($w),0,'','T');
-// }
+function ImprovedTable($header, $data)
+{
+    // Anchuras de las columnas
+    $w = array(10, 40, 50, 20,20,10);
+    // Cabeceras
+    for($i=0;$i<count($header);$i++)
+        $this->Cell($w[$i],7,$header[$i],1,0,'C');
+    $this->Ln();
+    // Datos
+    foreach($data as $row)
+    {
+        $this->Cell($w[0],6,$row[0],'LR');
+        $this->Cell($w[1],6,$row[1],'LR');
+        $this->Cell($w[2],6,number_format($row[2]),'LR',0,'R');
+        $this->Cell($w[3],6,number_format($row[3]),'LR',0,'R');
+        $this->Ln();
+    }
+    // Línea de cierre
+    $this->Cell(array_sum($w),0,'','T');
+}
 
 // Tabla coloreada
 // function FancyTable($header, $data)
@@ -129,17 +130,24 @@ function BasicTable($header, $data)
 
     $header = array('Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha');
     // Carga de datos
-    $data = ['Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha'];
+    // $data = $_POST['tabla'][0];
+    // $resumen = $_POST['tabla'][1];
+
     $pdf->SetFont('Arial','',11);
     
     $pdf->AddPage();
     $pdf->SetTextColor(0);
+
+    $data = $_SESSION['tmp_pdf'][0];
+
+    //var_dump($data);
+   
     // $pdf->BasicTable($header,$data);
     // $pdf->AddPage();
     // $pdf->ImprovedTable($header,$data);
     // $pdf->AddPage();
-    // $pdf->BasicTable($header,$data);
-    // $pdf->Output("reporte.pdf", "D");
+    $pdf->ImprovedTable($header,$data);
+    $pdf->Output("reporte.pdf", "I");
 
 
 

@@ -47,6 +47,8 @@ $respuesta=null;
 
 $respuesta= $reporte->getreporte();
 
+$_SESSION['tmp_pdf']= $respuesta;
+
        
 //var_dump($respuesta);
 
