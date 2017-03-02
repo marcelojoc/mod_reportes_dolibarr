@@ -1,7 +1,7 @@
 <?php
 require_once '../main.inc.php';
 require_once DOL_DOCUMENT_ROOT.'/reportes/class/reportes.class.php';
-require_once DOL_DOCUMENT_ROOT.'/reportes/class/tercero.class.php';
+//require_once DOL_DOCUMENT_ROOT.'/reportes/class/tercero.class.php';
 // validar acceso
 
 

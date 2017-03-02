@@ -138,8 +138,8 @@ function BasicTable($header, $data)
     // $pdf->AddPage();
     // $pdf->ImprovedTable($header,$data);
     // $pdf->AddPage();
-    $pdf->BasicTable($header,$data);
-    $pdf->Output("reporte.pdf", "D");
+    // $pdf->BasicTable($header,$data);
+    // $pdf->Output("reporte.pdf", "D");
 
 
 

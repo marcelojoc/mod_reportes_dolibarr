@@ -31,6 +31,41 @@
 
 
 
+	$("#printPdf").on('click', function(e){
+
+	e.preventDefault();
+
+	// var fecha_ini = $('#fecha_inicio').val();
+	// var fecha_fin = $('#fecha_fin').val();
+	// if (fecha_ini != "" && fecha_fin != ""){
+
+
+	// 	var vendedor  = $('#selVendedor').val();
+	// 	var producto  = $('#selProducto').val();
+	// 	var data= {
+	// 		inicio  :  fecha_ini,
+	// 		fin     :  fecha_fin,
+	// 		producto:  producto,
+	// 		vendedor:  vendedor
+	// 	}
+
+	// 	get_reporte(data);
+
+	// }else{
+
+	// 	alert('No especifico los campos de fecha');
+
+
+	// }
+
+})
+
+
+
+
+
+
+
 	$("a[href='#top']").on('click', function() {
 		$("html, body").animate({ scrollTop: 0 }, "slow");
 		return false;
