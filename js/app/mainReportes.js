@@ -11,11 +11,13 @@
 
 		var vendedor  = $('#selVendedor').val();
 		var producto  = $('#selProducto').val();
+		var nombre    = $('#selVendedor  option:selected').html();
 		var data= {
 			inicio  :  fecha_ini,
 			fin     :  fecha_fin,
 			producto:  producto,
-			vendedor:  vendedor
+			vendedor:  vendedor,
+			nombre  :  nombre
 		}
 
 		get_reporte(data);

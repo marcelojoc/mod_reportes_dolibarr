@@ -19,7 +19,7 @@ $id_usuario= $dato['vendedor'];
 $fecha_ini= $dato['inicio'];
 $fecha_fin= $dato['fin'];
 $id_producto= $dato['producto'];
-
+$nombre_vendedor = $dato['nombre'];
 
 
 
@@ -33,21 +33,19 @@ $reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_produc
 
 $respuesta=null;
 
-		
-//$respuesta = $vendedor->getCodVendedor(8);
-
-//$prueba = $ruta->getRutas();
-
-//$prueba= $vendor->getVendedores();
-
-//var_dump($reporte);
-
-//$respuesta = $reporte->getFacturas(527);
-
 
 $respuesta= $reporte->getreporte();
 
 $_SESSION['tmp_pdf']= $respuesta;
+
+$_SESSION['reporte'] ["fechaini"]=  $fecha_ini;
+$_SESSION['reporte'] ["fechafin"]=  $fecha_fin;
+$_SESSION['reporte'] ["nombre"]=  $nombre_vendedor;
+
+
+
+
+
 
        
 //var_dump($respuesta);

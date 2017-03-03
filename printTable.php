@@ -54,10 +54,28 @@ function BasicTable($header, $data)
 // }
 
 // // Una tabla más completa
-function ImprovedTable($header, $data)
+function ImprovedTable($header, $data, $reporte)
 {
+
+
+    $this->SetFont('Arial','',8);
+    // Color de fondo
+    $this->SetFillColor(200,220,255);
+    // Título
+    $this->Cell(0,9,"Reporte de Ventas desde  ". $reporte['fechaini'] . " Hasta " . $reporte['fechafin'] ,0,1,'C',true);
+    // Salto de línea
+    $this->Ln(4);
+
+    $this->Cell(0,9,"Vendedor ". $reporte['nombre'],0,1,'L',true);
+    // Salto de línea
+    $this->Ln(4);
+
+    $this->Cell(0,9,"Vendedor ". $reporte['nombre'],0,1,'L',true);
+    // Salto de línea
+    $this->Ln(4);
+
     // Anchuras de las columnas
-    $w = array(10, 40, 50, 20,20,10);
+    $w = array(18, 50, 60, 20,20,25);
     // Cabeceras
     for($i=0;$i<count($header);$i++)
         $this->Cell($w[$i],7,$header[$i],1,0,'C');
@@ -65,10 +83,25 @@ function ImprovedTable($header, $data)
     // Datos
     foreach($data as $row)
     {
-        $this->Cell($w[0],6,$row[0],'LR');
-        $this->Cell($w[1],6,$row[1],'LR');
-        $this->Cell($w[2],6,number_format($row[2]),'LR',0,'R');
-        $this->Cell($w[3],6,number_format($row[3]),'LR',0,'R');
+        //var_dump($row);
+        $this->Cell($w[0],6,$row['codigo'],'LR',0,'C');
+        $this->Cell($w[1],6,$row['nombre'],'LR',0,'L');
+        $this->Cell($w[2],6,$row['direccion'],'LR',0,'L');
+        $this->Cell($w[3],6,$row['importe'],'LR',0,'L');
+        $this->Cell($w[4],6,$row['cantidad'],'LR',0,'R');
+
+        if($row['ultimaFactura']== null)
+        {
+
+            $this->Cell($w[5],6,"Sin registro",'LR',0,'C');
+
+        }else{
+
+            $this->Cell($w[5],6,$row['ultimaFactura'],'LR',0,'C');
+
+        }
+        
+
         $this->Ln();
     }
     // Línea de cierre
@@ -133,20 +166,26 @@ function ImprovedTable($header, $data)
     // $data = $_POST['tabla'][0];
     // $resumen = $_POST['tabla'][1];
 
-    $pdf->SetFont('Arial','',11);
+    $pdf->SetFont('Arial','',8);
     
     $pdf->AddPage();
     $pdf->SetTextColor(0);
 
     $data = $_SESSION['tmp_pdf'][0];
 
-    //var_dump($data);
-   
+    $totales= $_SESSION['tmp_pdf'][1];
+
+    $reporte = $_SESSION['reporte'];
+
+//     var_dump($data);
+
+//       var_dump($totales);
+//    var_dump($reporte['fechaini']);
     // $pdf->BasicTable($header,$data);
     // $pdf->AddPage();
     // $pdf->ImprovedTable($header,$data);
     // $pdf->AddPage();
-    $pdf->ImprovedTable($header,$data);
+    $pdf->ImprovedTable($header,$data, $reporte);
     $pdf->Output("reporte.pdf", "I");
 
 

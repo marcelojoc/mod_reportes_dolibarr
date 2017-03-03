@@ -79,7 +79,9 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
         <div class="col-md-2 col-md-offset-4">
-            <button type="button" class="btn btn-info  btn-block" id = "printPdf">Imprimir PDF</button>
+
+        <a class="btn btn-info  btn-block"  href="printTable.php" target="_blank" >Imprimir PDF</a>
+          
     
                 <!--<button class="btn btn-warning  dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Large button <span class="caret"></span>
