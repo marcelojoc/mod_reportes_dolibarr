@@ -79,7 +79,7 @@ function ImprovedTable($header, $data, $reporte , $totales)
     $this->Ln(4);
 
     // Anchuras de las columnas
-    $w = array(18, 50, 60, 20,20,25);
+    $w = array(17, 50, 60, 25,25,20);
     // Cabeceras
     for($i=0;$i<count($header);$i++)
         $this->Cell($w[$i],7,$header[$i],1,0,'C');
@@ -91,8 +91,8 @@ function ImprovedTable($header, $data, $reporte , $totales)
         $this->Cell($w[0],6,$row['codigo'],'LR',0,'C');
         $this->Cell($w[1],6,$row['nombre'],'LR',0,'L');
         $this->Cell($w[2],6,$row['direccion'],'LR',0,'L');
-        $this->Cell($w[3],6,$row['importe'],'LR',0,'L');
-        $this->Cell($w[4],6,$row['cantidad'],'LR',0,'R');
+        $this->Cell($w[3],6,$row['importe']  ." % (". round (($row['importe'] * 100)/ $monto, 2)     ." )"   ,'LR',0,'C');
+        $this->Cell($w[4],6,$row['cantidad'] ." % (". round (($row['cantidad'] * 100)/ $productos, 2)     ." )" ,'LR',0,'C');
 
         if($row['ultimaFactura']== null)
         {
@@ -113,7 +113,7 @@ function ImprovedTable($header, $data, $reporte , $totales)
 
     $this->Ln(4);
 
-    $this->Cell(0,9,"Total productos ". $productos .  "           Valor ". $monto ,0,1,'L',true);
+    $this->Cell(0,9,"Total productos ". $productos .  "           Valor $". $monto ,0,1,'L',true);
     // Salto de línea
     $this->Ln(4);
 }
