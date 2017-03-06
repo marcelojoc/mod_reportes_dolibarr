@@ -121,11 +121,6 @@ function ImprovedTable($header, $data, $reporte , $totales)
 }
 
 
-
-//$data = unserialize($_SESSION["dataPrint"]);
-
-
-
     $pdf = new PDF();
     // Títulos de las columnas
 
@@ -167,6 +162,8 @@ function ImprovedTable($header, $data, $reporte , $totales)
     $pdf->ImprovedTable($header,$data, $reporte, $totales);
     $pdf->Output("reporte.pdf", "I");
 
+unset($_SESSION['tmp_pdf']);
+unset($_SESSION['tmp_pdf']);
 
 
 ?>

@@ -1,5 +1,6 @@
 (function(){
 
+	$("#btnPrint").attr('disabled', true);
 	$("#search_btn").on('click', function(e){
 
 	e.preventDefault();
@@ -23,6 +24,7 @@
 		}
 
 		get_reporte(data);
+		$("#btnPrint").attr('disabled', false);
 
 	}else{
 
@@ -33,36 +35,6 @@
 
 })
 
-
-
-	$("#printPdf").on('click', function(e){
-
-	e.preventDefault();
-
-	// var fecha_ini = $('#fecha_inicio').val();
-	// var fecha_fin = $('#fecha_fin').val();
-	// if (fecha_ini != "" && fecha_fin != ""){
-
-
-	// 	var vendedor  = $('#selVendedor').val();
-	// 	var producto  = $('#selProducto').val();
-	// 	var data= {
-	// 		inicio  :  fecha_ini,
-	// 		fin     :  fecha_fin,
-	// 		producto:  producto,
-	// 		vendedor:  vendedor
-	// 	}
-
-	 	printPDF();
-
-	// }else{
-
-	// 	alert('No especifico los campos de fecha');
-
-
-	// }
-
-})
 
 
 
@@ -201,48 +173,3 @@
 
 	}
 
-
-	function printPDF(){
-
-		
-			
-			$.ajax(
-					{
-					url : 'printTable.php',
-					type: "POST",
-					data : {
-							consulta: 'print_pdf',
-							tabla    : parametro
-							},
-					dataType: 'JSON',
-
-					success : function(json) {
-
-							console.log (json);
-					},
-
-					error : function(xhr, status) {
-						alert('Disculpe, existió un problema ');
-						//location.reload(true);
-						//alert('Disculpe, existió un problema '+ status + xhr );
-
-					},
-
-					beforeSend: function(){
-					// Code to display spinner
-						
-						// $('#content_table').addClass('opacidad');
-						// spinner.spin(target)
-
-					},
-
-					complete: function(){
-					// Code to hide spinner.
-						// $('#content_table').removeClass('opacidad');
-						// spinner.stop()
-					}
-
-
-			})
-
-		}
