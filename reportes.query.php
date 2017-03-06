@@ -20,7 +20,7 @@ $fecha_ini= $dato['inicio'];
 $fecha_fin= $dato['fin'];
 $id_producto= $dato['producto'];
 $nombre_vendedor = $dato['nombre'];
-
+$nom_prod       = $dato['prod_name'];
 
 
 
@@ -40,8 +40,12 @@ $_SESSION['tmp_pdf']= $respuesta;
 
 $_SESSION['reporte'] ["fechaini"]=  $fecha_ini;
 $_SESSION['reporte'] ["fechafin"]=  $fecha_fin;
-$_SESSION['reporte'] ["nombre"]=  $nombre_vendedor;
-
+$_SESSION['reporte'] ["nombre"]  =  $nombre_vendedor;
+$_SESSION['reporte'] ["nom_prod"]  =  $nom_prod;
+// $_SESSION['reporte'] ["total_prod"]=  $respuesta[1]['total_prod'];;
+// $_SESSION['reporte'] ["total_clientes"]=  $respuesta[1]['total_clientes'];
+// $_SESSION['reporte'] ["clientes_con_ventas"]=  $respuesta[1]['clientes_con_ventas'];
+// $_SESSION['reporte'] ["clientes_sin_ventas"]=  $respuesta[1]['clientes_sin_ventas'];
 
 
 

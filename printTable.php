@@ -54,8 +54,12 @@ function BasicTable($header, $data)
 // }
 
 // // Una tabla más completa
-function ImprovedTable($header, $data, $reporte)
+function ImprovedTable($header, $data, $reporte , $totales)
 {
+
+    $productos=(int)$totales['total_prod'];
+
+    $monto =(float) $totales['total_importe'];
 
 
     $this->SetFont('Arial','',8);
@@ -66,11 +70,11 @@ function ImprovedTable($header, $data, $reporte)
     // Salto de línea
     $this->Ln(4);
 
-    $this->Cell(0,9,"Vendedor ". $reporte['nombre'],0,1,'L',true);
+    $this->Cell(0,9,"Vendedor ". $reporte['nombre'] . "     Producto: ".$reporte['nom_prod'],0,1,'L',true);
     // Salto de línea
     $this->Ln(4);
 
-    $this->Cell(0,9,"Vendedor ". $reporte['nombre'],0,1,'L',true);
+    $this->Cell(0,9,"Clientes ". $totales['total_clientes'] . "       Clientes con Ventas ". $totales['clientes_con_ventas']."       Clientes sin Ventas ". $totales['clientes_sin_ventas'] ,0,1,'L',true);
     // Salto de línea
     $this->Ln(4);
 
@@ -106,50 +110,14 @@ function ImprovedTable($header, $data, $reporte)
     }
     // Línea de cierre
     $this->Cell(array_sum($w),0,'','T');
+
+    $this->Ln(4);
+
+    $this->Cell(0,9,"Total productos ". $productos .  "           Valor ". $monto ,0,1,'L',true);
+    // Salto de línea
+    $this->Ln(4);
 }
 
-// Tabla coloreada
-// function FancyTable($header, $data)
-// {
-
-//     $this->SetFont('Arial','',8);
-//     // Color de fondo
-//     $this->SetFillColor(200,220,255);
-//     // Título
-//     $this->Cell(0,9,"Reporte de Ruta ",0,1,'C',true);
-//     // Salto de línea
-//     $this->Ln(4);
-//     // Colores, ancho de línea y fuente en negrita
-//     $this->SetFillColor(255,255,255);
-//     $this->SetTextColor(0);
-//     $this->SetDrawColor(0,0,0);
-//     $this->SetLineWidth(.3);
-//     $this->SetFont('','B');
-//     // Cabecera
-//     $w = array(20, 80, 80, 10);
-//     for($i=0;$i<count($header);$i++)
-//         $this->Cell($w[$i],7,$header[$i],1,0,'C',true);
-//     $this->Ln();
-//     // Restauración de colores y fuentes
-//     $this->SetFillColor(255,255,255);
-//     $this->SetTextColor(0);
-//     $this->SetFont('');
-//     // Datos
-    
-//     foreach($data as $row)
-//     {
-//         $this->Cell($w[0],6,$row['cod_client'],'LRB',0,'C');
-//         $this->Cell($w[1],6,$row['nom'],'LRB',0,'L');
-//         $this->Cell($w[2],6,$row['adress'],'LRB',0,'L');
-//         $this->Cell($w[3],6,$row['nom'],'LRB',0,'L');
-//         $this->Cell($w[4],6,$row['adress'],'LRB',0,'L');
-//         $this->Cell($w[5],6,$row['ruta'],'LRB',0,'C');
-//         $this->Ln();
-        
-//     }
-//     // Línea de cierre
-//     //$this->Cell(array_sum($w),0,'','T');
-// }
 }
 
 
@@ -177,7 +145,18 @@ function ImprovedTable($header, $data, $reporte)
 
     $reporte = $_SESSION['reporte'];
 
-//     var_dump($data);
+//     var_dump($reporte);
+
+
+
+// //unset($_SESSION['reporte']);
+
+
+// $totales['total_prod'];;
+// $totales['total_clientes'];
+// $totales['clientes_con_ventas'];
+// $totales['clientes_sin_ventas'];
+// var_dump($totales);
 
 //       var_dump($totales);
 //    var_dump($reporte['fechaini']);
@@ -185,7 +164,7 @@ function ImprovedTable($header, $data, $reporte)
     // $pdf->AddPage();
     // $pdf->ImprovedTable($header,$data);
     // $pdf->AddPage();
-    $pdf->ImprovedTable($header,$data, $reporte);
+    $pdf->ImprovedTable($header,$data, $reporte, $totales);
     $pdf->Output("reporte.pdf", "I");
 
 
