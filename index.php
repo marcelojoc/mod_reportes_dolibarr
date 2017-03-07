@@ -12,9 +12,6 @@ dol_include_once('/reportes/class/tercero.class.php');
 // importaciones de el modulo
 
 
-
-
-
 $morejs=array("/reportes/js/datepicker/bootstrap-datepicker.min.js" , 
               "/reportes/js/spin/spin.min.js" );
 
@@ -37,10 +34,9 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
     $_SESSION['codVendedor']= $dato_usuario->codVendedor;
 
-
-
-
     $productos = new My_Productos($db);
+    $fecha = date("d/m/Y");                  // fecha actual en campo hidden para limitar el datepicker
+
 
 
  ?>
@@ -54,13 +50,13 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
     <h3>Reportes </h3> <hr>
-</div>
+    </div>
 
     <div class="row">
 
 
         <div class="col-md-6" id="sandbox-container">
-
+            <input type="hidden" name="hiddenDate" id="hiddenDate" value= "<?php print $fecha ; ?>">
             <div class="form-group">
             <label class="col-md-2 control-label" for="selectbasic">Fechas</label>
             <div class="col-md-10">
@@ -68,7 +64,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                     <div class="input-daterange input-group" id="datepicker">
                         <input type="text" class="input-sm form-control" name="start" id="fecha_inicio" />
                         <span class="input-group-addon">al</span>
-                        <input type="text" class="input-sm form-control" name="end" id="fecha_fin"/>
+                        <input type="text" class="input-sm form-control" name="end" id="fecha_fin" data-date-end-date="0d" />
                     </div>
 
             </div>
@@ -80,7 +76,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
         <div class="col-md-2 col-md-offset-4">
 
-        <a class="btn btn-info  btn-block" id= "btnPrint" href="printTable.php" target="_blank" >Imprimir PDF</a>
+        <a class="btn btn-info  btn-block " id= "btnPrint" href="printTable.php" target="_blank" >Imprimir PDF</a>
           
     
                 <!--<button class="btn btn-warning  dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -256,8 +252,11 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 <script>
 
+    var fechaActual = $('#hiddenDate').val();
     $('#sandbox-container .input-daterange').datepicker({
     format: "dd/mm/yyyy",
+    endDate: fechaActual,
+    todayHighlight: true,
     todayBtn: true,
     language: "es",
     daysOfWeekDisabled: "0",

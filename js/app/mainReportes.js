@@ -1,6 +1,6 @@
 (function(){
 
-	$("#btnPrint").attr('disabled', true);
+	$("#btnPrint").addClass('disabled');
 	$("#search_btn").on('click', function(e){
 
 	e.preventDefault();
@@ -24,12 +24,11 @@
 		}
 
 		get_reporte(data);
-		$("#btnPrint").attr('disabled', false);
+		$("#btnPrint").removeClass('disabled');
 
 	}else{
 
 		alert('No especifico los campos de fecha');
-
 
 	}
 
@@ -37,7 +36,12 @@
 
 
 
+$("#btnPrint").on('click', function(e){
 
+
+	$("#btnPrint").addClass('disabled');
+
+})
 
 
 
