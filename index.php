@@ -9,6 +9,8 @@ if (! $res) die("Include of main fails");
 
 dol_include_once('/reportes/class/productos.class.php');
 dol_include_once('/reportes/class/tercero.class.php');
+dol_include_once('/reportes/class/vendedor.class.php');
+dol_include_once('/reportes/class/ruta.class.php');
 // importaciones de el modulo
 
 
@@ -46,146 +48,161 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
     <div class="container-fluid " id="cont_principal">
 
 
-<div class="row">
+            <div class="row">
+                <h3>Reportes </h3> <hr>
+            </div>
+
+            <div class="row">
 
 
-    <h3>Reportes </h3> <hr>
-    </div>
+                    <div class="col-md-6" id="sandbox-container">
+                        <input type="hidden" name="hiddenDate" id="hiddenDate" value= "<?php print $fecha ; ?>">
+                        <div class="form-group">
+                        <label class="col-md-2 control-label" for="selectbasic">Fechas</label>
+                        <div class="col-md-10">
 
-    <div class="row">
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" name="start" id="fecha_inicio" />
+                                    <span class="input-group-addon">al</span>
+                                    <input type="text" class="input-sm form-control" name="end" id="fecha_fin" data-date-end-date="0d" />
+                                </div>
 
+                        </div>
+                        </div>
 
-        <div class="col-md-6" id="sandbox-container">
-            <input type="hidden" name="hiddenDate" id="hiddenDate" value= "<?php print $fecha ; ?>">
-            <div class="form-group">
-            <label class="col-md-2 control-label" for="selectbasic">Fechas</label>
-            <div class="col-md-10">
-
-                    <div class="input-daterange input-group" id="datepicker">
-                        <input type="text" class="input-sm form-control" name="start" id="fecha_inicio" />
-                        <span class="input-group-addon">al</span>
-                        <input type="text" class="input-sm form-control" name="end" id="fecha_fin" data-date-end-date="0d" />
                     </div>
 
-            </div>
-            </div>
-
-        </div>
+                    <div class="col-md-3">
 
 
+                        <label class="col-md-2 control-label" for="selProducto">Ruta</label>
+                        <div class="col-md-10">
+                            <select id="ruta" name="ruta" class="form-control btn-block" >
 
-        <div class="col-md-2 col-md-offset-4">
+                                <option value="1" selected=""> Ruta 1 Lunes</option>
+                                <option value="2"> Ruta 2 Martes</option>
+                                <option value="3"> Ruta 3 Miercoles</option>
+                                <option value="4"> Ruta 4 Jueves</option>
+                                <option value="5"> Ruta 5 Viernes</option>
+                                <option value="6"> Ruta 6 Sabado</option>
 
-        <a class="btn btn-info  btn-block " id= "btnPrint" href="printTable.php" target="_blank" >Imprimir PDF</a>
-          
-    
-                <!--<button class="btn btn-warning  dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Large button <span class="caret"></span>
-                </button>-->
+                            </select>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <a class="btn btn-info  btn-block " id= "btnPrint" href="printTable.php" target="_blank" >Imprimir PDF</a>
+                    
+                
+                            <!--<button class="btn btn-warning  dropdown-toggle " type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Large button <span class="caret"></span>
+                            </button>-->
+                    </div>
 
                 </div>
 
-        </div>
 
 
-    </div>
 
-    <hr>
+            <hr>
 
 
 
 
-<div class="row">
+            <div class="row">
 
 
 
-    <div class="col-md-5">
+            <div class="col-md-5">
 
 
-        <div class="form-group">
-        <label class="col-md-2 control-label" for="selVendedor">Vendedor</label>
-        <div class="col-md-10">
-            <select id="selVendedor" name="selVendedor" class="form-control">
+                <div class="form-group">
+                <label class="col-md-2 control-label" for="selVendedor">Vendedor</label>
+                <div class="col-md-10">
+                    <select id="selVendedor" name="selVendedor" class="form-control">
 
-        <?php
-                if($dato_usuario['codVendedor'] == -1 )
-                {   
+                <?php
+                        if($dato_usuario['codVendedor'] == -1 )
+                        {   
 
-                        // el parametro -1 indica permiso para ver tdods los usuarios
-                        print'<option value="0">Todos los vendedores</option>';
-                        $vendedores= $user->getVendedores();
+                                // el parametro -1 indica permiso para ver tdods los usuarios
+                                print'<option value="0">Todos los vendedores</option>';
+                                $vendedores= $user->getVendedores();
 
-                        foreach($vendedores as $vendedor)
+                                foreach($vendedores as $vendedor)
+                                {
+
+                                    print'<option value="'.$vendedor['rowid'].'">'.$vendedor ['nombre'] .' '. $vendedor ['apellido'] .'</option>';
+
+                                }
+
+                        }
+                        else
                         {
 
-                            print'<option value="'.$vendedor['rowid'].'">'.$vendedor ['nombre'] .' '. $vendedor ['apellido'] .'</option>';
+                                    print'<option value="'.$dato_usuario['rowid'].'">'.$dato_usuario ['nombre'] .' '. $dato_usuario ['apellido'] .'</option>';
 
                         }
 
-                }
-                else
-                {
 
-                          print'<option value="'.$dato_usuario['rowid'].'">'.$dato_usuario ['nombre'] .' '. $dato_usuario ['apellido'] .'</option>';
+                ?>
 
-                }
+                    </select>
+                </div>
+                </div>
 
+            </div>
 
-        ?>
+            <div class="col-md-5">
+                
 
-            </select>
-        </div>
-        </div>
+                <div class="form-group">
+                <label class="col-md-2 control-label" for="selProducto">Producto</label>
+                <div class="col-md-10">
+                    <select id="selProducto" name="selProducto" class="form-control">
 
-    </div>
+                    <?php
+                            $prod = $productos->getProducts();
 
-    <div class="col-md-5">
-        
-
-        <div class="form-group">
-        <label class="col-md-2 control-label" for="selProducto">Producto</label>
-        <div class="col-md-10">
-            <select id="selProducto" name="selProducto" class="form-control">
-
-            <?php
-                    $prod = $productos->getProducts();
-
-                    if( $prod != -1) // si no tiene nada  no imprime
-                    {
-                            foreach ($prod as $producto)
+                            if( $prod != -1) // si no tiene nada  no imprime
                             {
+                                    foreach ($prod as $producto)
+                                    {
 
-                                print'<option value="'.$producto['id'].'">'.$producto ['producto'].'</option>';
+                                        print'<option value="'.$producto['id'].'">'.$producto ['producto'].'</option>';
+
+                                    }
 
                             }
 
-                    }
+                    ?>
+                    </select>
 
-            ?>
-            </select>
+                </div>
+                </div>
 
-        </div>
-        </div>
-
-     </div>
+                </div>
 
 
 
 
 
-        <div class="col-md-2">
+                <div class="col-md-2">
 
-        <button type="button" class="btn btn-primary btn-block" id="search_btn">Buscar</button>
-        </div>
+                <button type="button" class="btn btn-primary btn-block" id="search_btn">Buscar</button>
+                </div>
 
-<br>
-<br>
-<br>
+            <br>
+            <br>
+            <br>
+            </div>
+
+
+
 </div>
-
-
-
-
 
 
 
