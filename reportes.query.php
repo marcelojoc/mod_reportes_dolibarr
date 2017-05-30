@@ -28,7 +28,7 @@ $ruta         = $dato['ruta'];
 // var_dump($datos);
 
 $reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_producto, $ruta );
-//$reporte   = new Reportes ($db, 0, '02/11/2016', '20/02/2017' , 2 );
+//$reporte   = new Reportes ($db, 0, '02/11/2016', '20/02/2017' , 2 ,4);
 
 
 $respuesta=null;

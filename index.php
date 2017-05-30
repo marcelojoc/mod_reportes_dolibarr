@@ -79,7 +79,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                         <div class="col-md-10">
                             <select id="ruta" name="ruta" class="form-control btn-block" >
 
-                                <option value="1" selected=""> Ruta 1 Lunes</option>
+                                <option value="1"> Ruta 1 Lunes</option>
                                 <option value="2"> Ruta 2 Martes</option>
                                 <option value="3"> Ruta 3 Miercoles</option>
                                 <option value="4"> Ruta 4 Jueves</option>
@@ -229,7 +229,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                             <th>Importe</th>
                             <th>Cantidad</th>
                             <th>Ultima Compra</th>
-
+                            <th>Ruta</th>
 
                         </tr>
                         </thead>

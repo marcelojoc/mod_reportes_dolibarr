@@ -14,7 +14,7 @@
 		var producto  = $('#selProducto').val();
 		var nombre    = $('#selVendedor  option:selected').html();
 		var prod_name = $('#selProducto  option:selected').html();
-		var ruta      = $('#ruta  option:selected').html();
+		var ruta      = $('#ruta').val();
 
 		var data= {
 			inicio  :  fecha_ini,

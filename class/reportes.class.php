@@ -25,15 +25,16 @@ class Reportes
 	var $fecha_ini;   // fecha de inicio rango de fecha
 	var $fecha_fin;   // fecha de fin de rango  para consultas
 	var $producto;     // codigo de referencia del producto 
+    var $ruta;          // numero de ruta para hacer la consulta
 
-
-	function __construct($db, $id_usuario, $fecha_ini, $fecha_fin, $producto )
+	function __construct($db, $id_usuario, $fecha_ini, $fecha_fin, $producto, $ruta )
 	{
 		$this->db = $db;
         $this->id_usuario = $id_usuario;
         $this->fecha_ini= $this->change_fecha($fecha_ini);
         $this->fecha_fin= $this->change_fecha($fecha_fin);		
         $this->producto= $producto;
+        $this->ruta = $ruta;
 
 		$tercero = new Tercero($this->db, $this->id_usuario);
 		$this->codVendedor = $tercero->getCodVendedor($this->id_usuario);
@@ -79,7 +80,7 @@ function getReporte()
                     "direccion" => $cliente['address'],
                     "importe" => $valor,
                     "cantidad" =>$cantidad,
-                    "ultimaFactura" => $ultimaFecha['last']
+                    "ultimaFactura" => $ultimaFecha['last'],
                     );
 
                     $total_prod= $total_prod + $cantidades['cantidad'] ;
@@ -172,7 +173,7 @@ function lastInvoiceDate($id_cliente)
                         llx_societe.nom, llx_societe.address
 
                         FROM    llx_societe, llx_societe_extrafields
-                        WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."
+                        WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
                         AND     llx_societe.rowid = llx_societe_extrafields.fk_object
                         ORDER BY code_client desc";
 
@@ -181,8 +182,10 @@ function lastInvoiceDate($id_cliente)
 
             $sql= " SELECT  llx_societe.code_client, 
                 llx_societe.rowid , 
-                llx_societe.nom, llx_societe.address
-                FROM    llx_societe WHERE  llx_societe.status = 1
+                llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+                FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+                AND llx_societe_extrafields.ruta1 =".$this->ruta." 
+                AND llx_societe.rowid = llx_societe_extrafields.fk_object
                 ORDER BY code_client DESC";
 
 
