@@ -79,7 +79,7 @@ function ImprovedTable($header, $data, $reporte , $totales)
     $this->Ln(4);
 
     // Anchuras de las columnas
-    $w = array(17, 50, 60, 25,25,20);
+    $w = array(17, 50, 50, 25,25,20,10);
     // Cabeceras
     for($i=0;$i<count($header);$i++)
         $this->Cell($w[$i],7,$header[$i],1,0,'C');
@@ -105,6 +105,7 @@ function ImprovedTable($header, $data, $reporte , $totales)
 
         }
         
+        $this->Cell($w[6],6,$row['ruta'],'LR',0,'C');
 
         $this->Ln();
     }
@@ -124,7 +125,7 @@ function ImprovedTable($header, $data, $reporte , $totales)
     $pdf = new PDF();
     // Títulos de las columnas
 
-    $header = array('Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha');
+    $header = array('Codigo', 'Cliente', 'Domicilio', 'importe', 'Cantidad', 'fecha', 'Ruta');
     // Carga de datos
     // $data = $_POST['tabla'][0];
     // $resumen = $_POST['tabla'][1];

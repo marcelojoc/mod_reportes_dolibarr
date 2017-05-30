@@ -81,6 +81,8 @@ function getReporte()
                     "importe" => $valor,
                     "cantidad" =>$cantidad,
                     "ultimaFactura" => $ultimaFecha['last'],
+                    "ruta"=> $cliente['ruta']
+                    
                     );
 
                     $total_prod= $total_prod + $cantidades['cantidad'] ;
@@ -170,7 +172,7 @@ function lastInvoiceDate($id_cliente)
 
             $sql="	SELECT  llx_societe.code_client, 
                         llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address
+                        llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
 
                         FROM    llx_societe, llx_societe_extrafields
                         WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
@@ -211,7 +213,8 @@ function lastInvoiceDate($id_cliente)
                                             'rowid'=> $obj->rowid,
                                             'code_client'=> $obj->code_client,
                                             'nom'=>$obj->nom,
-                                            'address'=> $obj->address
+                                            'address'=> $obj->address,
+                                            'ruta'=> $obj->ruta1
                                         );
                                 }
                                 $i++;
