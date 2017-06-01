@@ -62,6 +62,8 @@ function getReporte()
             $total_importe=0;
             $c_con_ventas=0;
 
+var_dump($clientes);
+exit;
                 foreach($clientes as $cliente)
                 {
 
@@ -159,36 +161,64 @@ function lastInvoiceDate($id_cliente)
 
 
 
-
-
-
-
-
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
 
-        if ($this->codVendedor != 0)
+        if ($this->codVendedor != 0) // representa a un vendedor en especifico
         {
 
-            $sql="	SELECT  llx_societe.code_client, 
+            if($this->ruta != 0){  // representa a una ruta en especifico
+
+                    $sql="	SELECT  llx_societe.code_client, 
+                            llx_societe.rowid , 
+                            llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
+
+                            FROM    llx_societe, llx_societe_extrafields
+                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
+                            AND     llx_societe.rowid = llx_societe_extrafields.fk_object
+                            ORDER BY code_client desc";
+
+            }else{      // representa a todas las rutas
+
+                      $sql="	SELECT  llx_societe.code_client, 
+                            llx_societe.rowid , 
+                            llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
+
+                            FROM    llx_societe, llx_societe_extrafields
+                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."AND     
+                            llx_societe.rowid = llx_societe_extrafields.fk_object ORDER BY code_client desc";
+
+            }
+            
+
+
+        }else{   // aqui se representa a todos los vendedores
+
+
+                if($this->ruta != 0){
+                    // consulta que representa a una ruta especifica
+
+                    $sql= " SELECT  llx_societe.code_client, 
                         llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
-
-                        FROM    llx_societe, llx_societe_extrafields
-                        WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
-                        AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-                        ORDER BY code_client desc";
-
-        }else{
+                        llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+                        FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+                        AND llx_societe_extrafields.ruta1 =".$this->ruta." 
+                        AND llx_societe.rowid = llx_societe_extrafields.fk_object
+                        ORDER BY code_client DESC";
 
 
-            $sql= " SELECT  llx_societe.code_client, 
-                llx_societe.rowid , 
-                llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
-                FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
-                AND llx_societe_extrafields.ruta1 =".$this->ruta." 
-                AND llx_societe.rowid = llx_societe_extrafields.fk_object
-                ORDER BY code_client DESC";
+                }else{
+                    // consulta que representa a todas las rutas
+
+                    $sql= "SELECT  llx_societe.code_client, 
+                            llx_societe.rowid , 
+                            llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+                            FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+                            AND llx_societe.rowid = llx_societe_extrafields.fk_object
+                            ORDER BY code_client DESC";
+
+                }
+
 
 
         }
@@ -319,6 +349,118 @@ function getcantidadDetalle($id_factura_detalle)   // devuelve por cliente la ca
 
 return $datos;
 }
+
+    /*
+
+    Esta modificacion sera para integrar la funcion de reportes de comprobantes por clientes
+    y para que el modulo pueda buscar por producto especifico  o por todos los productos 
+
+
+
+
+    */
+
+
+
+
+
+
+function getCantidadComprobantes($id_Cliente){
+
+
+            $sql="	SELECT COUNT(*) AS comprobantes 
+                    FROM llx_facture 
+                    WHERE fk_soc = '".$id_Cliente ."' 
+                    AND fk_statut = 2 
+                    AND datef BETWEEN '". $this->fecha_ini ."' 
+                    AND '". $this->fecha_fin ."' ";
+
+
+
+        // consulta que representa a todos los vendedores
+        // if ($this->codVendedor != 0)
+        // {
+
+        //     if($this->ruta != 0){  // representa a todas las rutas
+
+        //             $sql="	SELECT  llx_societe.code_client, 
+        //             llx_societe.rowid , 
+        //             llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
+
+        //             FROM    llx_societe, llx_societe_extrafields
+        //             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
+        //             AND     llx_societe.rowid = llx_societe_extrafields.fk_object
+        //             ORDER BY code_client desc";
+
+        //     }else{      // representa a una ruta en especifico
+
+
+
+        //     }
+
+        // }else{
+            
+        //         // consulta que representa a un vendedor en particular
+
+        //     if(true){
+        //         // consulta que representa a todas las rutas 
+
+        //         $sql= " SELECT  llx_societe.code_client, 
+        //         llx_societe.rowid , 
+        //         llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+        //         FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+        //         AND llx_societe_extrafields.ruta1 =".$this->ruta." 
+        //         AND llx_societe.rowid = llx_societe_extrafields.fk_object
+        //         ORDER BY code_client DESC";
+
+
+        //     }else{
+        //         // consulta que representa una ruta en especifico
+
+        //         $sql="";
+
+        //     }
+
+        // }
+
+            $resql = $this->db->query($sql);
+
+            if ($resql)
+            {
+                $num = $this->db->num_rows($resql);
+                $i = 0;
+                if ($num)
+                {
+                        while ($i < $num)
+                        {
+                                $obj = $this->db->fetch_object($resql);
+                                if ($obj)
+                                {
+                                        // You can use here results
+                                        $respuesta[]= array(
+                                            'comprobante'=> $obj->comprobante
+                                        );
+                                }
+                                $i++;
+                        }
+                }
+            }else{ $respuesta = 'hay un error en la conexion';}
+
+            $this->db->free($resql);
+            return  $respuesta;
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

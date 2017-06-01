@@ -190,7 +190,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 <div class="row " id="content_table" >
 
                     <div class="panel panel-default">
-                    <div class="panel-heading">Reporte Ventas</div>
+                    <div class="panel-heading">Reporte comprobantes por cliente</div>
                     <div class="panel-body">
                
                      <h3 id= "resumen_clientes"></h3>

@@ -78,7 +78,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                         <label class="col-md-2 control-label" for="selProducto">Ruta</label>
                         <div class="col-md-10">
                             <select id="ruta" name="ruta" class="form-control btn-block" >
-
+                                <option value="0"> Todas las rutas</option>
                                 <option value="1"> Ruta 1 Lunes</option>
                                 <option value="2"> Ruta 2 Martes</option>
                                 <option value="3"> Ruta 3 Miercoles</option>
