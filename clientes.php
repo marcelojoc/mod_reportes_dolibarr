@@ -159,7 +159,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
             <div class="col-md-5">
                 
-
+                        
 
 
                 </div>
@@ -190,7 +190,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 <div class="row " id="content_table" >
 
                     <div class="panel panel-default">
-                    <div class="panel-heading">Reporte comprobantes por cliente</div>
+                    <div class="panel-heading">Reporte por comprobantes / bultos</div>
                     <div class="panel-body">
                
                      <h3 id= "resumen_clientes"></h3>
@@ -206,7 +206,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                             <th>Domicilio</th>
                             <th>Localidad</th>
                             <th>Comprobantes</th>
-                            <th>Ultima Compra</th>
+                            <th>Bultos</th>
                             <th>Ruta</th>
 
                         </tr>

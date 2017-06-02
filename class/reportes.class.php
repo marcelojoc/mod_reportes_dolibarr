@@ -62,8 +62,29 @@ function getReporte()
             $total_importe=0;
             $c_con_ventas=0;
 
-var_dump($clientes);
-exit;
+
+// codigo de prueba
+
+
+// var_dump("codVendedor ".$this->codVendedor."-".
+
+
+//  $this->id_usuario ."-".$this->producto  ."- ruta ".$this->ruta );
+
+		// $this->db = $db;
+        // $this->id_usuario = $id_usuario;
+        // $this->fecha_ini= $this->change_fecha($fecha_ini);
+        // $this->fecha_fin= $this->change_fecha($fecha_fin);		
+        // $this->producto= $producto;
+        // $this->ruta = $ruta;
+
+
+// var_dump($clientes);
+// exit;
+
+
+// codigo de prueba
+
                 foreach($clientes as $cliente)
                 {
 
@@ -180,12 +201,12 @@ function lastInvoiceDate($id_cliente)
 
             }else{      // representa a todas las rutas
 
-                      $sql="	SELECT  llx_societe.code_client, 
+                      $sql="SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
                             llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
 
                             FROM    llx_societe, llx_societe_extrafields
-                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor."AND     
+                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND     
                             llx_societe.rowid = llx_societe_extrafields.fk_object ORDER BY code_client desc";
 
             }
@@ -447,7 +468,7 @@ function getCantidadComprobantes($id_Cliente){
             }else{ $respuesta = 'hay un error en la conexion';}
 
             $this->db->free($resql);
-            return  $respuesta;
+            return  $num;
 
 }
 

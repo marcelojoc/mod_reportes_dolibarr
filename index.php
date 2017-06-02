@@ -49,7 +49,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
 
             <div class="row">
-                <h3>Reportes </h3> <hr>
+                <h3>Reportes por Monto</h3> <hr>
             </div>
 
             <div class="row">
