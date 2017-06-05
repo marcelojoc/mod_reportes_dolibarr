@@ -175,8 +175,8 @@ var getComprobanteClientes= function( valor){
 
 					success : function(json) {
 
-							// localStorage.removeItem('tabla_venta');
-							// localStorage.setItem('tabla_venta', JSON.stringify(json));
+							localStorage.removeItem('tabla_cliente');
+							localStorage.setItem('tabla_cliente', JSON.stringify(json));
 							cargarTabla(json);
 					},
 
