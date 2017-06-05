@@ -15,25 +15,27 @@ data:{
     fechaIni:"",
     fechaFin:"",
     ruta: "0",
-    idVendedor: "0"
+    idVendedor: "0",
+	selector: '1'
 },
 
-update: function(){
+	update: function(){
 
-// cada evento que sucede en los componentes actualizo mi modelo
-
-
-    if (params.validate()){   // valido que los campos esten completos
-
-        $('#search_btn').attr("disabled", false);
-    }else{
-
-        $('#search_btn').attr("disabled", true);
-    }
+			// cada evento que sucede en los componentes actualizo mi modelo
 
 
+			if (params.validate()){   // valido que los campos esten completos
 
-},
+				$('#search_btn').attr("disabled", false);
+			}else{
+
+				$('#search_btn').attr("disabled", true);
+			}
+
+
+
+
+	},
 
     beginComponents: function(){
 
@@ -51,7 +53,15 @@ update: function(){
 
                 if(params.validate()){
 
-                        console.log('peticion ajax');
+                        
+						if(params.data.selector == "1"){
+
+							$('#text_table').text('Comprobantes');
+						}else{
+
+							$('#text_table').text('Bultos');
+
+						}
 
                         getComprobanteClientes(params.data);
 
@@ -81,10 +91,14 @@ update: function(){
             
             params.data.fechaIni= $('#fecha_inicio').val();
             params.data.fechaFin= $('#fecha_fin').val();  
-
-            
             params.update();
 
+        });
+
+		$( "input[name=opciones]:radio" ).on('change', function(){
+
+            params.data.selector= $(this).val();
+            params.update();                       
         });
 
 
@@ -107,16 +121,6 @@ validate: function(){
 }
 
 };
-
-
-var getValores = function(){
-
-
-
-
-
-    alert('ejecutando get Valores');
-}
 
 
 
@@ -171,8 +175,8 @@ var getComprobanteClientes= function( valor){
 
 					success : function(json) {
 
-							localStorage.removeItem('tabla_venta');
-							localStorage.setItem('tabla_venta', JSON.stringify(json));
+							// localStorage.removeItem('tabla_venta');
+							// localStorage.setItem('tabla_venta', JSON.stringify(json));
 							cargarTabla(json);
 					},
 
@@ -199,6 +203,35 @@ var getComprobanteClientes= function( valor){
 
 
 			})
+
+
+
+
+}
+
+
+
+var cargarTabla = function(datos){
+
+			$('#table_body tr').remove();
+				for (var i =0 ; i < datos.length; i++)
+				{
+					
+						// fila de la tabla con los datos modificados
+						var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" 
+						+ datos[i]['direccion'] + "</td><td>"+ datos[i]['localidad']+"</td><td>" + datos[i]['comprobantes'] +"</td><td> "
+						+ datos[i]['ruta'] +"   </td> </tr>"
+
+						$('#table_body').append(lista.replace('null', 'Sin registro'));
+
+				}
+
+
+			//var total_tabla = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+								
+			//$('#table_body').append(total_tabla);
+
+
 
 
 

@@ -158,11 +158,27 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
             </div>
 
             <div class="col-md-5">
-                
-                        
 
+                <div class="col-md-6">   
 
+                    <div class="radio">
+                    <label>
+                        <input type="radio" name="opciones" id="opciones_1" value="1" checked>
+                            Por Comprobantes
+                    </label>
+                    </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="radio">
+                    <label>
+                        <input type="radio" name="opciones" id="opciones_2" value="2" disabled>
+                        Por Bulto
+                    </label>
+                    </div>
+                </div>
+                
+            </div>
 
 
 
@@ -205,8 +221,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                             <th>Cliente</th>
                             <th>Domicilio</th>
                             <th>Localidad</th>
-                            <th>Comprobantes</th>
-                            <th>Bultos</th>
+                            <th id="text_table">Comprobantes</th>
                             <th>Ruta</th>
 
                         </tr>

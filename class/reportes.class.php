@@ -104,6 +104,7 @@ function getReporte()
                     "importe" => $valor,
                     "cantidad" =>$cantidad,
                     "ultimaFactura" => $ultimaFecha['last'],
+                    
                     "ruta"=> $cliente['ruta']
                     
                     );
@@ -150,33 +151,33 @@ function getReporte()
 
 function lastInvoiceDate($id_cliente)
 
-{
-    $sql ="SELECT rowid,  DATE_FORMAT(datef,'%d/%m/%Y') AS datef  FROM llx_facture
-    WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC LIMIT 1 ";
+    {
+        $sql ="SELECT rowid,  DATE_FORMAT(datef,'%d/%m/%Y') AS datef  FROM llx_facture
+        WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC LIMIT 1 ";
 
-  
-        $res = $this->db->query($sql);
-        $num = $this->db->num_rows($res);
-        // si devuelve producto  entro al proceso
-        if ($num){
+    
+            $res = $this->db->query($sql);
+            $num = $this->db->num_rows($res);
+            // si devuelve producto  entro al proceso
+            if ($num){
 
-        $obj = $this->db->fetch_object($res);
-            if ($obj)
-            {
-                
-                // aqui guardo el valor total de ventas
-                (empty($obj->datef)) ? $valor = "Sin registro": $valor = $obj->datef;
+            $obj = $this->db->fetch_object($res);
+                if ($obj)
+                {
+                    
+                    // aqui guardo el valor total de ventas
+                    (empty($obj->datef)) ? $valor = "Sin registro": $valor = $obj->datef;
 
-                $fecha=array('last'=> $valor);
+                    $fecha=array('last'=> $valor);
 
+                }
+        
             }
-     
-        }
 
 
-        return $fecha;
+            return $fecha;
 
-}
+    }
 
 
 
@@ -192,7 +193,7 @@ function lastInvoiceDate($id_cliente)
 
                     $sql="	SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
+                            llx_societe.nom, llx_societe.address, llx_societe.town ,llx_societe_extrafields.ruta1
 
                             FROM    llx_societe, llx_societe_extrafields
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
@@ -203,7 +204,7 @@ function lastInvoiceDate($id_cliente)
 
                       $sql="SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
+                            llx_societe.nom, llx_societe.address , llx_societe.town,llx_societe_extrafields.ruta1
 
                             FROM    llx_societe, llx_societe_extrafields
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND     
@@ -221,7 +222,7 @@ function lastInvoiceDate($id_cliente)
 
                     $sql= " SELECT  llx_societe.code_client, 
                         llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+                        llx_societe.nom, llx_societe.address, llx_societe.town ,llx_societe_extrafields.ruta1
                         FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
                         AND llx_societe_extrafields.ruta1 =".$this->ruta." 
                         AND llx_societe.rowid = llx_societe_extrafields.fk_object
@@ -233,7 +234,7 @@ function lastInvoiceDate($id_cliente)
 
                     $sql= "SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
+                            llx_societe.nom, llx_societe.address , llx_societe.town ,llx_societe_extrafields.ruta1
                             FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
                             AND llx_societe.rowid = llx_societe_extrafields.fk_object
                             ORDER BY code_client DESC";
@@ -265,6 +266,7 @@ function lastInvoiceDate($id_cliente)
                                             'code_client'=> $obj->code_client,
                                             'nom'=>$obj->nom,
                                             'address'=> $obj->address,
+                                            'town'=> $obj->town,
                                             'ruta'=> $obj->ruta1
                                         );
                                 }
@@ -344,32 +346,35 @@ function lastInvoiceDate($id_cliente)
 
 function getcantidadDetalle($id_factura_detalle)   // devuelve por cliente la cantidad de producto vendido y el valor
 
-{
- 
-    $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
-    FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
-   
+    {
+    
+        $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
+        FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
+    
 
-        $res = $this->db->query($sql);
-        $num = $this->db->num_rows($res);
-        // si devuelve producto  entro al proceso
-        if ($num){
+            $res = $this->db->query($sql);
+            $num = $this->db->num_rows($res);
+            // si devuelve producto  entro al proceso
+            if ($num){
 
-            $obj = $this->db->fetch_object($res);
-            if ($obj)
-            {
+                $obj = $this->db->fetch_object($res);
+                if ($obj)
+                {
 
 
-                $datos= ['cantidad'=> $obj->productos,
-                         'valor'=> $obj->valor
-                ];
+                    $datos= ['cantidad'=> $obj->productos,
+                            'valor'=> $obj->valor
+                    ];
+                }
+
+                
             }
 
-            
-        }
+            return $datos;
+    }
 
-return $datos;
-}
+
+
 
     /*
 
@@ -383,8 +388,52 @@ return $datos;
 
 
 
+function getReportecomprobantes(){
+
+        $clientes = $this->getClientes();
+        $dato= null;
+        //$clientes_totales= count($clientes, 0);
+
+        if($clientes != null)
+        {
+            $total_prod=0;
+            $total_importe=0;
+            $c_con_ventas=0;
 
 
+                foreach($clientes as $cliente){
+
+                    $comp= $this->getCantidadComprobantes($cliente['rowid']);
+                    $dato[]= array( "codigo" => $cliente['code_client'],
+
+                    "nombre" => $cliente['nom'],
+                    "direccion" => $cliente['address'],
+                    "localidad" => $cliente['town'],
+                    "comprobantes"=>$comp['comprobante'],
+                    "ruta"=> $cliente['ruta']
+                    
+                    );
+
+                }
+
+
+        }        
+        else{
+
+            $dato= "No hay Clientes asignados";
+        }
+
+return  $this->orderMultiDimensionalArray($dato,'comprobantes', true);
+
+}
+
+
+function getBultosPorComp($id_comprobante){
+
+
+
+
+}
 
 function getCantidadComprobantes($id_Cliente){
 
@@ -397,53 +446,6 @@ function getCantidadComprobantes($id_Cliente){
                     AND '". $this->fecha_fin ."' ";
 
 
-
-        // consulta que representa a todos los vendedores
-        // if ($this->codVendedor != 0)
-        // {
-
-        //     if($this->ruta != 0){  // representa a todas las rutas
-
-        //             $sql="	SELECT  llx_societe.code_client, 
-        //             llx_societe.rowid , 
-        //             llx_societe.nom, llx_societe.address ,llx_societe_extrafields.ruta1
-
-        //             FROM    llx_societe, llx_societe_extrafields
-        //             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
-        //             AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-        //             ORDER BY code_client desc";
-
-        //     }else{      // representa a una ruta en especifico
-
-
-
-        //     }
-
-        // }else{
-            
-        //         // consulta que representa a un vendedor en particular
-
-        //     if(true){
-        //         // consulta que representa a todas las rutas 
-
-        //         $sql= " SELECT  llx_societe.code_client, 
-        //         llx_societe.rowid , 
-        //         llx_societe.nom, llx_societe.address,llx_societe_extrafields.ruta1
-        //         FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
-        //         AND llx_societe_extrafields.ruta1 =".$this->ruta." 
-        //         AND llx_societe.rowid = llx_societe_extrafields.fk_object
-        //         ORDER BY code_client DESC";
-
-
-        //     }else{
-        //         // consulta que representa una ruta en especifico
-
-        //         $sql="";
-
-        //     }
-
-        // }
-
             $resql = $this->db->query($sql);
 
             if ($resql)
@@ -452,14 +454,19 @@ function getCantidadComprobantes($id_Cliente){
                 $i = 0;
                 if ($num)
                 {
+
+                   
                         while ($i < $num)
                         {
                                 $obj = $this->db->fetch_object($resql);
                                 if ($obj)
                                 {
+                                     
                                         // You can use here results
-                                        $respuesta[]= array(
-                                            'comprobante'=> $obj->comprobante
+                                        $respuesta= array(
+                                            'comprobante'=> $obj->comprobantes
+
+
                                         );
                                 }
                                 $i++;
@@ -468,7 +475,7 @@ function getCantidadComprobantes($id_Cliente){
             }else{ $respuesta = 'hay un error en la conexion';}
 
             $this->db->free($resql);
-            return  $num;
+            return  $respuesta;
 
 }
 

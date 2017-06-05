@@ -15,9 +15,9 @@ $consulta = $_POST["consulta"]; // recibir datos de metodo a ejecutar
 $dato     =  $_POST["dato"];	// recibo un arreglo con los datos del formulario
 
 // Separo cada dato enviado para instanciar el reporte
-$id_usuario   = 7;
+$id_usuario   = 8;
 $fecha_ini    = '02/11/2015';
-$fecha_fin    = '02/06/2017';
+$fecha_fin    = '05/06/2017';
 $id_producto  = 2;
 $nombre_vendedor = "FRANCO AGUSTIN BERTOLO";
 $nom_prod     = "Speed Unlimited 250 ml x 24 latas";
@@ -35,9 +35,10 @@ $respuesta=null;
 
 
 //$respuesta= $reporte->getClientes();
-$respuesta= $reporte->getCantidadComprobantes("204");
+//$respuesta= $reporte->getCantidadComprobantes("527");
+$respuesta= $reporte->getReportecomprobantes();
 
-
+//echo($respuesta['comprobantes']);
 var_dump($respuesta);
 
 
@@ -81,4 +82,4 @@ var_dump($respuesta);
 // }
 
 
-echo json_encode($respuesta);
+//echo json_encode($respuesta);
