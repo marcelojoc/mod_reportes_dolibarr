@@ -129,7 +129,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                         {   
 
                                 // el parametro -1 indica permiso para ver tdods los usuarios
-                                print'<option value="0">Todos los vendedores</option>';
+                                print'<option value="0">Todos los Vendedores</option>';
                                 $vendedores= $user->getVendedores();
 
                                 foreach($vendedores as $vendedor)
@@ -169,6 +169,7 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
 
                             if( $prod != -1) // si no tiene nada  no imprime
                             {
+                                    print'<option value="0">Todos los Productos</option>';
                                     foreach ($prod as $producto)
                                     {
 

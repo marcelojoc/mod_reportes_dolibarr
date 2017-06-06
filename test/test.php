@@ -5,6 +5,7 @@ require_once DOL_DOCUMENT_ROOT.'/reportes/class/reportes.class.php';
 // validar acceso
 
 
+
 // $consulta = GETPOST("consulta", "alpha");
 // $datos     = GETPOST("dato", "alpha");
 
@@ -18,7 +19,7 @@ $dato     =  $_POST["dato"];	// recibo un arreglo con los datos del formulario
 $id_usuario   = 8;
 $fecha_ini    = '02/11/2015';
 $fecha_fin    = '05/06/2017';
-$id_producto  = 2;
+$id_producto  = '1';
 $nombre_vendedor = "FRANCO AGUSTIN BERTOLO";
 $nom_prod     = "Speed Unlimited 250 ml x 24 latas";
 $ruta         =1;
@@ -34,9 +35,9 @@ $reporte   = new Reportes ($db, $id_usuario, $fecha_ini, $fecha_fin , $id_produc
 $respuesta=null;
 
 
-//$respuesta= $reporte->getClientes();
+$respuesta= $reporte->getReporte();
 //$respuesta= $reporte->getCantidadComprobantes("527");
-$respuesta= $reporte->getReportecomprobantes();
+//$respuesta= $reporte->getReportecomprobantes();
 
 //echo($respuesta['comprobantes']);
 //var_dump($respuesta);
@@ -61,7 +62,7 @@ $respuesta= $reporte->getReportecomprobantes();
 
 
        
-//var_dump($respuesta);
+var_dump($respuesta);
 
 //  switch ($consulta)
 // {

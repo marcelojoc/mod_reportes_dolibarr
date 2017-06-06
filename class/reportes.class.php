@@ -152,8 +152,16 @@ function getReporte()
 function lastInvoiceDate($id_cliente)
 
     {
-        $sql ="SELECT rowid,  DATE_FORMAT(datef,'%d/%m/%Y') AS datef  FROM llx_facture
-        WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC LIMIT 1 ";
+
+
+
+            // esta consulta devuelve si es un numero de id de producto especifico
+            $sql ="SELECT rowid,  DATE_FORMAT(datef,'%d/%m/%Y') AS datef  FROM llx_facture
+            WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC LIMIT 1 ";
+
+
+
+       
 
     
             $res = $this->db->query($sql);
@@ -347,9 +355,23 @@ function lastInvoiceDate($id_cliente)
 function getcantidadDetalle($id_factura_detalle)   // devuelve por cliente la cantidad de producto vendido y el valor
 
     {
+
+
+        if($this->producto == 0){
+
+            $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
+            FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle;
+
+        }else{
+
+
+
+            $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
+            FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
+
+
+        }
     
-        $sql = "SELECT  IFNULL( SUM(qty),0) AS productos  ,IFNULL( SUM(total_ht),0)  AS valor 
-        FROM llx_facturedet WHERE fk_facture = ".$id_factura_detalle." AND fk_product= ".$this->producto;
     
 
             $res = $this->db->query($sql);
