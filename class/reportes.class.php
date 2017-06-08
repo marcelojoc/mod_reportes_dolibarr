@@ -58,9 +58,9 @@ function getReporte()
 
         if($clientes != null)
         {
-            $total_prod=0;
-            $total_importe=0;
-            $c_con_ventas=0;
+            $total_prod=0;      // total de los productos de toda la lista
+            $total_importe=0;   // total importe
+            $c_con_ventas=0;   // clientes con ventas
 
 
 // codigo de prueba
@@ -97,17 +97,18 @@ function getReporte()
 
                     (is_null($cantidades['cantidad'])) ? $cantidad = 0: $cantidad = $cantidades['cantidad'];
 
-                    $dato[]= array( "codigo" => $cliente['code_client'],
+                        $dato[]= array( "codigo" => $cliente['code_client'],
 
-                    "nombre" => $cliente['nom'],
-                    "direccion" => $cliente['address'],
-                    "importe" => $valor,
-                    "cantidad" =>$cantidad,
-                    "ultimaFactura" => $ultimaFecha['last'],
-                    
-                    "ruta"=> $cliente['ruta']
-                    
-                    );
+                            "nombre" => $cliente['nom'],
+                            "direccion" => $cliente['address'],
+                            "importe" => $valor,
+                            "cantidad" =>$cantidad,
+                            "ultimaFactura" => $ultimaFecha['last'],
+                            
+                            "ruta"=> $cliente['ruta'],
+                            "vendedor"=> $cliente['vendedor']
+                        
+                        );
 
                     $total_prod= $total_prod + $cantidades['cantidad'] ;
                     $total_importe= $total_importe + $cantidades['valor'] ;
@@ -199,11 +200,12 @@ function lastInvoiceDate($id_cliente)
 
             if($this->ruta != 0){  // representa a una ruta en especifico
 
-                    $sql="	SELECT  llx_societe.code_client, 
+                    $sql="SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address, llx_societe.town ,llx_societe_extrafields.ruta1
+                            llx_societe.nom, llx_societe.address, llx_societe.town ,
+                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
 
-                            FROM    llx_societe, llx_societe_extrafields
+                            FROM    llx_societe, llx_societe_extrafields, llx_user_extrafields
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
                             AND     llx_societe.rowid = llx_societe_extrafields.fk_object
                             ORDER BY code_client desc";
@@ -212,9 +214,10 @@ function lastInvoiceDate($id_cliente)
 
                       $sql="SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address , llx_societe.town,llx_societe_extrafields.ruta1
+                            llx_societe.nom, llx_societe.address, llx_societe.town ,
+                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
 
-                            FROM    llx_societe, llx_societe_extrafields
+                            FROM    llx_societe, llx_societe_extrafields, llx_user_extrafields
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND     
                             llx_societe.rowid = llx_societe_extrafields.fk_object ORDER BY code_client desc";
 
@@ -229,9 +232,10 @@ function lastInvoiceDate($id_cliente)
                     // consulta que representa a una ruta especifica
 
                     $sql= " SELECT  llx_societe.code_client, 
-                        llx_societe.rowid , 
-                        llx_societe.nom, llx_societe.address, llx_societe.town ,llx_societe_extrafields.ruta1
-                        FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+                            llx_societe.rowid , 
+                            llx_societe.nom, llx_societe.address, llx_societe.town ,
+                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
+                        FROM    llx_societe , llx_societe_extrafields, llx_user_extrafields WHERE  llx_societe.status = 1 
                         AND llx_societe_extrafields.ruta1 =".$this->ruta." 
                         AND llx_societe.rowid = llx_societe_extrafields.fk_object
                         ORDER BY code_client DESC";
@@ -242,8 +246,9 @@ function lastInvoiceDate($id_cliente)
 
                     $sql= "SELECT  llx_societe.code_client, 
                             llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address , llx_societe.town ,llx_societe_extrafields.ruta1
-                            FROM    llx_societe , llx_societe_extrafields WHERE  llx_societe.status = 1 
+                            llx_societe.nom, llx_societe.address, llx_societe.town ,
+                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
+                            FROM    llx_societe , llx_societe_extrafields , llx_user_extrafields WHERE  llx_societe.status = 1 
                             AND llx_societe.rowid = llx_societe_extrafields.fk_object
                             ORDER BY code_client DESC";
 
@@ -275,7 +280,9 @@ function lastInvoiceDate($id_cliente)
                                             'nom'=>$obj->nom,
                                             'address'=> $obj->address,
                                             'town'=> $obj->town,
-                                            'ruta'=> $obj->ruta1
+                                            'ruta'=> $obj->ruta1,
+                                            'vendedor'=> $obj->id_vendedor
+
                                         );
                                 }
                                 $i++;
@@ -314,20 +321,15 @@ function lastInvoiceDate($id_cliente)
                     while ($i < $num)
                     {
                             $factura = $this->db->fetch_object($res);
-                            if ($factura)
-                            {
-
-                                // llamar al metodo que traE las cantidades 
-                            $dato= $this->getcantidadDetalle($factura->rowid);
-
-                            
-                            $tmp_cantidad= $tmp_cantidad +$dato['cantidad'];
-                            $tmp_valor = $tmp_valor + $dato['valor'];
-                                    
-                            }
+                                if ($factura)
+                                {
+                                    // llamar al metodo que traE las cantidades 
+                                    $dato= $this->getcantidadDetalle($factura->rowid);
+                                    $tmp_cantidad= $tmp_cantidad +$dato['cantidad'];
+                                    $tmp_valor = $tmp_valor + $dato['valor'];
+                                        
+                                }
                             $i++;
-
-
 
                     }
 
@@ -450,12 +452,6 @@ return  $this->orderMultiDimensionalArray($dato,'comprobantes', true);
 }
 
 
-function getBultosPorComp($id_comprobante){
-
-
-
-
-}
 
 function getCantidadComprobantes($id_Cliente){
 
