@@ -221,20 +221,32 @@ llxHeader('','Modulo Descuentos','','','','',$morejs,$morecss,0,0);
                      <br>
 
 
-                    <table class="table table-bordered table-responsive" id= "table_complete" >
+                    <table class="table table-bordered table-responsive table-striped table-condensed text-center" id= "table_complete" >
                         <thead>
                         <tr>
+                            <th>Vendedor</th>
                             <th>Codigo</th>
                             <th>Cliente</th>
                             <th>Domicilio</th>
+                            <th>Localidad</th>
                             <th>Importe</th>
                             <th>Cantidad</th>
+                            <th>Comprobante</th>
                             <th>Ultima Compra</th>
                             <th>Ruta</th>
 
                         </tr>
                         </thead>
                         <tbody id="table_body">
+
+
+
+
+
+
+
+
+
 
                         </tbody>
                     </table>

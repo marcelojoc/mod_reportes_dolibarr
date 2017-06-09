@@ -146,18 +146,33 @@ $("#btnPrint").on('click', function(e){
 				{
 					
 						// fila de la tabla con los datos modificados
-						var lista=  " <tr><td>" + datos[i]['codigo'] + "</td><td>" + datos[i]['nombre'] + "</td><td>" 
-						+ datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
-						+ " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
-						+ "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
-						+ datos[i]['ultimaFactura']+"   </td><td>"+ datos[i]['ruta'] +"</td> </tr>"
+						// var lista=  " <tr><td>" + datos[i].vendedor + "</td><td>" + datos[i].codigo + "</td><td>" + datos[i].nombre + "</td><td>" 
+						// + datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
+						// + " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
+						// + "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
+						// + datos[i]['ultimaFactura']+"   </td><td>"+ datos[i]['ruta'] +"</td> </tr>"
+
+						var lista=  `<tr> 
+										<td>${datos[i].vendedor}</td>
+										<td>${datos[i].codigo}</td>
+										<td>${datos[i].nombre}</td>
+										<td>${datos[i].direccion}</td>
+										<td>${datos[i].localidad}</td>
+										<td>${datos[i].importe} % ${ porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i].importe))}</td>
+										<td>${datos[i].cantidad} %  ${ porcentaje( totales['total_prod'] , datos[i].cantidad)}</td>
+										<td>${datos[i].comprobantes} </td>
+										<td>${datos[i].ultimaFactura}</td>
+										<td>${datos[i].ruta}</td> 
+									</tr>`
+
+
 
 						$('#table_body').append(lista.replace('null', 'Sin registro'));
 
 				}
 
 
-			var total_tabla = "  <tr> <td colspan='3'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td></tr> "
+			var total_tabla = "  <tr> <td colspan='5'> <b> TOTAL </b></td> <td> $ "+ totales['total_importe'] +"</td><td>"+ totales['total_prod'] +"</td><td></td><td></td><td></td></tr> "
 								
 			$('#table_body').append(total_tabla);
 

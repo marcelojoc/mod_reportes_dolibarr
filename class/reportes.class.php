@@ -91,7 +91,7 @@ function getReporte()
                     $cantidades = $this->getFacturas($cliente['rowid']);  // traigo las cantidades 
                     
                     $ultimaFecha = $this->lastInvoiceDate($cliente['rowid']); // traigo la ultima fecha que le facturaron al cliente
-
+                    $comprobantes = $this->getCantidadComprobantes($cliente['rowid']);        // aqui traigo la cantidad de comprobantes del cliente
 
                     (is_null($cantidades['valor'])) ? $valor = 0: $valor = $cantidades['valor'];
 
@@ -104,7 +104,8 @@ function getReporte()
                             "importe" => $valor,
                             "cantidad" =>$cantidad,
                             "ultimaFactura" => $ultimaFecha['last'],
-                            
+                            "localidad" => $cliente['town'],
+                            "comprobantes" => $comprobantes['comprobante'],                           
                             "ruta"=> $cliente['ruta'],
                             "vendedor"=> $cliente['vendedor']
                         
@@ -190,7 +191,7 @@ function lastInvoiceDate($id_cliente)
 
 
 
-
+//todo ajustar consultas para que traiga el  nombre del vendedor
 
     function getClientes()  //trae los clientes correspondientes al vendedor
     {
@@ -198,28 +199,34 @@ function lastInvoiceDate($id_cliente)
         if ($this->codVendedor != 0) // representa a un vendedor en especifico
         {
 
-            if($this->ruta != 0){  // representa a una ruta en especifico
+            if($this->ruta != 0){  // representa a una ruta en especifico1
 
                     $sql="SELECT  llx_societe.code_client, 
-                            llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address, llx_societe.town ,
-                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
-
-                            FROM    llx_societe, llx_societe_extrafields, llx_user_extrafields
-                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta."
-                            AND     llx_societe.rowid = llx_societe_extrafields.fk_object
-                            ORDER BY code_client desc";
+                                llx_societe.rowid , 
+                                llx_societe.nom, llx_societe.address, 
+                                llx_societe.town ,llx_societe_extrafields.ruta1 AS ruta, 
+                                llx_user.firstname AS vendedor
+                            FROM    llx_societe 
+                            INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
+                            INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
+                            INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
+                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta. " 
+                            AND llx_societe.status = 1 
+                            ORDER BY code_client DESC ";
 
             }else{      // representa a todas las rutas
 
                       $sql="SELECT  llx_societe.code_client, 
-                            llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address, llx_societe.town ,
-                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
-
-                            FROM    llx_societe, llx_societe_extrafields, llx_user_extrafields
-                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND     
-                            llx_societe.rowid = llx_societe_extrafields.fk_object ORDER BY code_client desc";
+                                    llx_societe.rowid , 
+                                    llx_societe.nom, llx_societe.address, 
+                                    llx_societe.town ,llx_societe_extrafields.ruta1 AS ruta, 
+                                    llx_user.firstname AS vendedor
+                            FROM    llx_societe 
+                            INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
+                            INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
+                            INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
+                            WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor. "  AND llx_societe.status = 1
+                            ORDER BY code_client DESC";
 
             }
             
@@ -231,25 +238,32 @@ function lastInvoiceDate($id_cliente)
                 if($this->ruta != 0){
                     // consulta que representa a una ruta especifica
 
-                    $sql= " SELECT  llx_societe.code_client, 
-                            llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address, llx_societe.town ,
-                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
-                        FROM    llx_societe , llx_societe_extrafields, llx_user_extrafields WHERE  llx_societe.status = 1 
-                        AND llx_societe_extrafields.ruta1 =".$this->ruta." 
-                        AND llx_societe.rowid = llx_societe_extrafields.fk_object
-                        ORDER BY code_client DESC";
+                    $sql= "SELECT  llx_societe.code_client, 
+                                    llx_societe.rowid , 
+                                    llx_societe.nom, llx_societe.address, 
+                                    llx_societe.town ,llx_societe_extrafields.ruta1 AS ruta, 
+                                    llx_user.firstname AS vendedor
+                            FROM    llx_societe
+                            INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
+                            INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
+                            INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
+                            WHERE   llx_societe_extrafields.ruta1 = " .$this->ruta. " AND llx_societe.status = 1 
+                            ORDER BY code_client DESC";
 
 
                 }else{
                     // consulta que representa a todas las rutas
 
                     $sql= "SELECT  llx_societe.code_client, 
-                            llx_societe.rowid , 
-                            llx_societe.nom, llx_societe.address, llx_societe.town ,
-                            llx_societe_extrafields.ruta1, llx_user_extrafields.fk_object AS id_vendedor
-                            FROM    llx_societe , llx_societe_extrafields , llx_user_extrafields WHERE  llx_societe.status = 1 
-                            AND llx_societe.rowid = llx_societe_extrafields.fk_object
+                                llx_societe.rowid , 
+                                llx_societe.nom, llx_societe.address, 
+                                llx_societe.town ,llx_societe_extrafields.ruta1 AS ruta, 
+                                llx_user.firstname AS vendedor
+                            FROM    llx_societe 
+                            INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
+                            INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
+                            INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
+                            WHERE llx_societe.status = 1 
                             ORDER BY code_client DESC";
 
                 }
@@ -280,8 +294,8 @@ function lastInvoiceDate($id_cliente)
                                             'nom'=>$obj->nom,
                                             'address'=> $obj->address,
                                             'town'=> $obj->town,
-                                            'ruta'=> $obj->ruta1,
-                                            'vendedor'=> $obj->id_vendedor
+                                            'ruta'=> $obj->ruta,
+                                            'vendedor'=> $obj->vendedor
 
                                         );
                                 }
