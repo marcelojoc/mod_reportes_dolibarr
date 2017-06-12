@@ -474,8 +474,7 @@ function getCantidadComprobantes($id_Cliente){
 
             $sql="	SELECT COUNT(*) AS comprobantes 
                     FROM llx_facture 
-                    WHERE fk_soc = '".$id_Cliente ."' 
-                    AND fk_statut = 2 
+                    WHERE fk_soc = '".$id_Cliente ."'  
                     AND datef BETWEEN '". $this->fecha_ini ."' 
                     AND '". $this->fecha_fin ."' ";
 
