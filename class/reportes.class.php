@@ -63,24 +63,24 @@ function getReporte()
             $c_con_ventas=0;   // clientes con ventas
 
 
-// codigo de prueba
+                // codigo de prueba
 
 
-// var_dump("codVendedor ".$this->codVendedor."-".
+                // var_dump("codVendedor ".$this->codVendedor."-".
 
 
-//  $this->id_usuario ."-".$this->producto  ."- ruta ".$this->ruta );
+                //  $this->id_usuario ."-".$this->producto  ."- ruta ".$this->ruta );
 
-		// $this->db = $db;
-        // $this->id_usuario = $id_usuario;
-        // $this->fecha_ini= $this->change_fecha($fecha_ini);
-        // $this->fecha_fin= $this->change_fecha($fecha_fin);		
-        // $this->producto= $producto;
-        // $this->ruta = $ruta;
+                        // $this->db = $db;
+                        // $this->id_usuario = $id_usuario;
+                        // $this->fecha_ini= $this->change_fecha($fecha_ini);
+                        // $this->fecha_fin= $this->change_fecha($fecha_fin);		
+                        // $this->producto= $producto;
+                        // $this->ruta = $ruta;
 
 
-// var_dump($clientes);
-// exit;
+                // var_dump($clientes);
+                // exit;
 
 
 // codigo de prueba
@@ -193,7 +193,8 @@ function lastInvoiceDate($id_cliente)
 
 //todo ajustar consultas para que traiga el  nombre del vendedor
 
-    function getClientes()  //trae los clientes correspondientes al vendedor
+function getClientes()  //trae los clientes correspondientes al vendedor
+
     {
 
         if ($this->codVendedor != 0) // representa a un vendedor en especifico
@@ -211,12 +212,12 @@ function lastInvoiceDate($id_cliente)
                             INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
                             INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor." AND llx_societe_extrafields.ruta1 = " .$this->ruta. " 
-                            AND llx_societe.status = 1 
+                            AND llx_societe.status = 1 AND llx_societe.client= 1 
                             ORDER BY code_client DESC ";
 
             }else{      // representa a todas las rutas
 
-                      $sql="SELECT  llx_societe.code_client, 
+                    $sql="SELECT  llx_societe.code_client, 
                                     llx_societe.rowid , 
                                     llx_societe.nom, llx_societe.address, 
                                     llx_societe.town ,llx_societe_extrafields.ruta1 AS ruta, 
@@ -226,6 +227,7 @@ function lastInvoiceDate($id_cliente)
                             INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
                             INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
                             WHERE   llx_societe_extrafields.vendedor = " .$this->codVendedor. "  AND llx_societe.status = 1
+                            AND llx_societe.client= 1 
                             ORDER BY code_client DESC";
 
             }
@@ -247,7 +249,7 @@ function lastInvoiceDate($id_cliente)
                             INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
                             INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
                             INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
-                            WHERE   llx_societe_extrafields.ruta1 = " .$this->ruta. " AND llx_societe.status = 1 
+                            WHERE   llx_societe_extrafields.ruta1 = " .$this->ruta. " AND llx_societe.status = 1  AND llx_societe.client= 1 
                             ORDER BY code_client DESC";
 
 
@@ -263,7 +265,7 @@ function lastInvoiceDate($id_cliente)
                             INNER JOIN llx_societe_extrafields ON llx_societe.rowid= llx_societe_extrafields.fk_object
                             INNER JOIN llx_user_extrafields ON llx_user_extrafields.codvendedor= llx_societe_extrafields.vendedor
                             INNER JOIN llx_user ON llx_user.rowid = llx_user_extrafields.fk_object
-                            WHERE llx_societe.status = 1 
+                            WHERE llx_societe.status = 1 AND llx_societe.client= 1 
                             ORDER BY code_client DESC";
 
                 }
@@ -312,13 +314,13 @@ function lastInvoiceDate($id_cliente)
 
 
 
-    function getFacturas($id_cliente)
+function getFacturas($id_cliente)
     {
 
         $sql ="SELECT rowid, datef FROM llx_facture
         WHERE fk_soc = ".$id_cliente." AND  datef BETWEEN '".$this->fecha_ini."' AND '".$this->fecha_fin."' ORDER BY datef DESC ";
 
-  
+
         $res = $this->db->query($sql);
         
         // si devuelve producto  entro al proceso
@@ -356,8 +358,8 @@ function lastInvoiceDate($id_cliente)
 
 
                 $datos= ['cantidad'=> $cantidad,
-                         'valor'=> $valor,
-                         'facturas'=> $num
+                        'valor'=> $valor,
+                        'facturas'=> $num
 
                 ];
 
@@ -517,67 +519,22 @@ function getCantidadComprobantes($id_Cliente){
 
 
 
-
-
-
-
-
-
-
-
-
 private function change_fecha($fecha)
-{
+    {
 
-    $dia = substr($fecha, 0, 2);
-    $mes   = substr($fecha, 3, 2);
-    $ano = substr($fecha, -4);
-    // fechal final realizada el cambio de formato a las fechas europeas
-    $fecha = $ano . '-' . $mes . '-' . $dia;
+        $dia = substr($fecha, 0, 2);
+        $mes   = substr($fecha, 3, 2);
+        $ano = substr($fecha, -4);
+        // fechal final realizada el cambio de formato a las fechas europeas
+        $fecha = $ano . '-' . $mes . '-' . $dia;
 
-    return $fecha;
+        return $fecha;
 
-}
-
-
-
-// function array_sort($array, $on, $order=SORT_ASC)
-// {
-//     $new_array = array();
-//     $sortable_array = array();
-
-//     if (count($array) > 0) {
-//         foreach ($array as $k => $v) {
-//             if (is_array($v)) {
-//                 foreach ($v as $k2 => $v2) {
-//                     if ($k2 == $on) {
-//                         $sortable_array[$k] = $v2;
-//                     }
-//                 }
-//             } else {
-//                 $sortable_array[$k] = $v;
-//             }
-//         }
-
-//         switch ($order) {
-//             case SORT_ASC:
-//                 asort($sortable_array);
-//             break;
-//             case SORT_DESC:
-//                 arsort($sortable_array);
-//             break;
-//         }
-
-//         foreach ($sortable_array as $k => $v) {
-//             $new_array[$k] = $array[$k];
-//         }
-//     }
+    }
 
 
-//     return $new_array;
 
-    
-// }
+
 
 
 function orderMultiDimensionalArray ($toOrderArray, $field, $inverse = false) {

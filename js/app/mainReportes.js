@@ -144,13 +144,7 @@ $("#btnPrint").on('click', function(e){
 			$('#table_body tr').remove();
 				for (var i =0 ; i < datos.length; i++)
 				{
-					
-						// fila de la tabla con los datos modificados
-						// var lista=  " <tr><td>" + datos[i].vendedor + "</td><td>" + datos[i].codigo + "</td><td>" + datos[i].nombre + "</td><td>" 
-						// + datos[i]['direccion'] + "</td><td> $ " + datos[i]['importe'] 
-						// + " ( % "+  porcentaje( parseFloat(totales['total_importe']), parseFloat(datos[i]['importe'])) +")"
-						// + "</td><td>" + datos[i]['cantidad'] +" ( % " + porcentaje( totales['total_prod'] ,datos[i]['cantidad']) + ") </td><td> "
-						// + datos[i]['ultimaFactura']+"   </td><td>"+ datos[i]['ruta'] +"</td> </tr>"
+
 
 						var lista=  `<tr> 
 										<td>${datos[i].vendedor}</td>
